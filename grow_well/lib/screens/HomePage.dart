@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:grow_well/models/dataDB.dart';
 import 'package:grow_well/screens/AboutPage.dart';
 import 'package:grow_well/screens/InfoPage.dart';
 import 'package:grow_well/screens/NewData.dart';
 import 'package:grow_well/screens/ProfilePage.dart';
 import 'package:grow_well/screens/RecapPage.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,15 +18,15 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     HomePageWidget(),
     ProfilePageWidget(),
-    RecapPageWidget(),
+    RecapPage(),
     InfoPageWidget(),
   ];
 
   final List<String> _titles = [
     'Welcome to GrowWell!',
-    'YOUR PROFILE',
-    'RECAP OF YOUR DATA',
-    'INFORMATION',
+    'Your profile',
+    'Recap of your data',
+    'Information',
   ];
 
 
@@ -106,17 +108,14 @@ class HomePageWidget extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => NewDataPage()),
-          );
-        },
-        child: const Icon(Icons.add_outlined,color: Color.fromARGB(255, 59, 81, 33)),
-        backgroundColor: Color.fromARGB(255, 225, 250, 196),
-        
+        child: Icon(Icons.add),
+        onPressed: () => _toNewDataPage(context, Provider.of<DataDB>(context, listen: false), -1),
       ),
     );
+  } 
+
+
+  void _toNewDataPage(BuildContext context, DataDB dataDB, int dataIndex) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage(dataDB: dataDB, dataIndex: dataIndex)));
   }
-}
+  }
