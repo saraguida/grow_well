@@ -108,7 +108,8 @@ class HomePageWidget extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add_outlined,color: Color.fromARGB(255, 59, 81, 33)),
+        backgroundColor: Color.fromARGB(255, 225, 250, 196),
         onPressed: () => _toNewDataPage(context, Provider.of<DataDB>(context, listen: false), -1),
       ),
     );
