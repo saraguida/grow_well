@@ -7,7 +7,10 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ABOUT THE APP',style:  TextStyle(color: Color.fromARGB(255, 59, 81, 33), fontWeight: FontWeight.bold)),
+        title: const Text('About GrowWell',
+            style: TextStyle(
+                color: Color.fromARGB(255, 59, 81, 33),
+                fontWeight: FontWeight.bold)),
       ),
       body: const Center(
         child: Text(
