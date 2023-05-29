@@ -1,13 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:grow_well/screens/HomePage.dart';
 
 void main() {
-  runApp(Builder(
-    builder: (context) {
-      return MyApp();
-    }
-  ));
+  runApp(Builder(builder: (context) {
+    return MyApp();
+  }));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,
       ),
-      home:HomePage(),
+      home: HomePage(),
     );
   }
 }

@@ -24,18 +24,22 @@ class _HomePageState extends State<HomePage> {
     'Welcome to GrowWell!',
     'YOUR PROFILE',
     'RECAP OF YOUR DATA',
-    'INFORMATION',
+    'Information',
   ];
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_currentIndex],style:  TextStyle(color: Color.fromARGB(255, 59, 81, 33), fontWeight: FontWeight.bold)),
+        title: Text(_titles[_currentIndex],
+            style: TextStyle(
+                color: Color.fromARGB(255, 59, 81, 33),
+                fontWeight: FontWeight.bold)),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.help_outline, color: Color.fromARGB(255, 59, 81, 33)),
+            icon: Icon(Icons.help_outline,
+                color: Color.fromARGB(255, 59, 81, 33)),
             onPressed: () {
               Navigator.push(
                 context,
@@ -49,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         showUnselectedLabels: true,
-        selectedItemColor:Color.fromARGB(255, 59, 81, 33),
+        selectedItemColor: Color.fromARGB(255, 59, 81, 33),
         unselectedItemColor: Color.fromARGB(255, 59, 81, 33),
         onTap: (index) {
           setState(() {
@@ -70,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month),
             label: 'Recap',
-            backgroundColor:Colors.lightGreen,
+            backgroundColor: Colors.lightGreen,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
@@ -87,7 +91,7 @@ class HomePageWidget extends StatelessWidget {
   const HomePageWidget({super.key});
 
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -106,16 +110,15 @@ class HomePageWidget extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => NewDataPage()),
           );
         },
-        child: const Icon(Icons.add_outlined,color: Color.fromARGB(255, 59, 81, 33)),
+        child: const Icon(Icons.add_outlined,
+            color: Color.fromARGB(255, 59, 81, 33)),
         backgroundColor: Color.fromARGB(255, 225, 250, 196),
-        
       ),
     );
   }
