@@ -16,7 +16,6 @@ class AboutPage extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          //color: Colors.black,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -33,36 +32,41 @@ class AboutPage extends StatelessWidget {
               ),
 
               // 2°
-              _elencoPuntato(0xe318,
+              _elencoPuntato(0xe318, "Home",
                   "In your home page you'll find the three indicators: heart rate, hight-for-age indicator for stunting, weight-for-height for malnutrition"),
 
               // 3°
-              _elencoPuntato(0xe491,
+              _elencoPuntato(0xe491, "Profile",
                   "The profile page will give you a recap of the child's personal data"),
 
               // 4°
-              _elencoPuntato(0xf06bb,
-                  "You'll also have a summary page with a calendar where all the past data are shown"),
+              _elencoPuntato(0xf06bb, "Recap",
+                  "You'll also have a recap page with a calendar where all the past data are shown"),
 
               // 5°
-              _elencoPuntato(0xe33c,
+              _elencoPuntato(0xe33c, "Info",
                   "In the info page you'll find all the important information about who to call and where to go when you need medical assistance")
             ],
           ),
         ));
   }
 
-  Widget _elencoPuntato(int iconCode, String testo) {
+  Widget _elencoPuntato(int iconCode, String pageName, String testo) {
     return Container(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            //Icon(Icons.icon_code),
-            Icon(
-              IconData(iconCode, fontFamily: 'MaterialIcons'),
-              color: Color.fromARGB(255, 59, 81, 33),
-            ),
+            SizedBox(
+                width: 45,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(IconData(iconCode, fontFamily: 'MaterialIcons'),
+                        color: Color.fromARGB(255, 59, 81, 33)),
+                    Text(pageName)
+                  ],
+                )),
             SizedBox(width: 20),
             SizedBox(
               width: 300,
