@@ -49,15 +49,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override  
   Widget build(BuildContext context) {  
     return Scaffold(  
-        appBar: AppBar(  
-          title: Text('Profile',  
-          style: TextStyle(
-            color: Color.fromARGB(255,59,81,33),
-            fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.lightGreen,
-        ),  
         body: Padding(  
             padding: EdgeInsets.all(15),  
             child: Column(  
@@ -120,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 100,),
+                              SizedBox(width: 15,),
                               const Text('Date of birth:'),
                               CupertinoButton(
                                 // Display a CupertinoDatePicker in date picker mode.
