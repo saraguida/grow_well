@@ -10,3 +10,5 @@ com.example.grow_well.app-rs-8 C:\Users\ASUS\Desktop\BIOMEDICAL WEARABLE TECHNOL
 com.example.grow_well.app-mergeDebugResources-9 C:\Users\ASUS\Desktop\BIOMEDICAL WEARABLE TECHNOLOGIES FOR HEALTHCARE AND WELLBEING\grow_well\grow_well\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
 com.example.grow_well.app-mergeDebugResources-10 C:\Users\ASUS\Desktop\BIOMEDICAL WEARABLE TECHNOLOGIES FOR HEALTHCARE AND WELLBEING\grow_well\grow_well\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
 com.example.grow_well.app-merged_res-11 C:\Users\ASUS\Desktop\BIOMEDICAL WEARABLE TECHNOLOGIES FOR HEALTHCARE AND WELLBEING\grow_well\grow_well\build\app\intermediates\merged_res\debug
+com.example.grow_well.app-packaged_res-12 C:\Users\ASUS\Desktop\BIOMEDICAL WEARABLE TECHNOLOGIES FOR HEALTHCARE AND WELLBEING\grow_well\grow_well\build\shared_preferences_android\intermediates\packaged_res\debug
+com.example.grow_well.app-packaged_res-13 C:\Users\ASUS\Desktop\BIOMEDICAL WEARABLE TECHNOLOGIES FOR HEALTHCARE AND WELLBEING\grow_well\grow_well\build\url_launcher_android\intermediates\packaged_res\debug
