@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grow_well/models/dataDB.dart';
-import 'package:grow_well/screens/HomePage.dart';
+import 'package:grow_well/screens/LoginPage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.lightGreen,
         ),
-        home: HomePage(),
+        home: LoginPage(),
       ),
     );
   }

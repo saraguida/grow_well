@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart.';
+import 'package:grow_well/screens/LoginPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -10,19 +12,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   static const routeDisplayName = 'Profile';
 
   //static const route = '/profile/';
   //static const routename = 'ProfilePage';
 
-  TextEditingController nameController = TextEditingController();  
-  TextEditingController surnameController = TextEditingController(); 
-  TextEditingController addressController = TextEditingController();   
-  TextEditingController phoneController = TextEditingController();   
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   DateTime date = DateTime(2000, 1, 1);
-  
 
   void _showDialog(Widget child) {
     showCupertinoModalPopup<void>(
@@ -46,145 +46,148 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  @override  
-  Widget build(BuildContext context) {  
-    return Scaffold(  
-        body: Padding(  
-            padding: EdgeInsets.all(15),  
-            child: Column(  
-              children: <Widget>[  
-                Padding(  
-                 padding: EdgeInsets.all(15),  
-                  child: TextField(  
-                    controller: nameController,  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'Name',  
-                      hintText: 'Enter Your Name',  
-                   ),  
-                  ),  
-                ),  
-                Padding(  
-                  padding: EdgeInsets.all(15),  
-                  child: TextField(  
-                    controller: surnameController,  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'Surname',  
-                      hintText: 'Enter Your Surname',  
-                    ),  
-                    ),  
-                ),   
-                Padding(  
-                  padding: EdgeInsets.all(15),  
-                  child: Center(
-                    child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Gender:'),
-                              SizedBox(width: 20,),
-                              DropdownButtonHideUnderline(
-                                child: DropdownButton2(
-                                  hint: Text(
-                                    'Select',
-                                  ),
-                                  items: items
-                                          .map((item) => DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                        ),
-                                        ))
-                                          .toList(),
-                                  value: selectedValue,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedValue = value as String;
-                                    });
-                                  },
-                                  buttonStyleData: const ButtonStyleData(
-                                    height: 40,
-                                    width: 90,
-                                  ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    height: 40,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 15,),
-                              const Text('Date of birth:'),
-                              CupertinoButton(
-                                // Display a CupertinoDatePicker in date picker mode.
-                                onPressed: () => _showDialog(
-                                  CupertinoDatePicker(
-                                    initialDateTime: date,
-                                    mode: CupertinoDatePickerMode.date,
-                                    use24hFormat: true,
-                                    // This shows day of week alongside day of month
-                                    showDayOfWeek: true,
-                                    // This is called when the user changes the date.
-                                    onDateTimeChanged: (DateTime newDate) {
-                                      setState(() => date = newDate);
-                                    },
-                                  ),
-                                ),
-                                // In this example, the date is formatted manually. You can
-                                // use the intl package to format the value based on the
-                                // user's locale settings.
-                                child: Text(
-                                  '${date.month}-${date.day}-${date.year}',
-//                                  style: const TextStyle(
-  //                                  fontSize: 22.0,
-    //                              ),
-                                ),
-                              ),
-                            ],
-                    ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Name',
+                    hintText: 'Enter Your Name',
                   ),
                 ),
-                Padding(  
-                  padding: EdgeInsets.all(15),  
-                  child: TextField(  
-                    controller: addressController,  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'Address',  
-                      hintText: 'Enter Your Address',  
-                    ),  
-                    ),  
-                ),  
-                Padding(  
-                  padding: EdgeInsets.all(15),  
-                  child: TextField(  
-                    controller: phoneController,  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'Phone Number',  
-                      hintText: 'Enter Your Phone Number',  
-                    ),  
-                    ),  
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  controller: surnameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Surname',
+                    hintText: 'Enter Your Surname',
+                  ),
                 ),
-              ],  
-            )  
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-           // Navigator.push(
-             // context,
-          //    MaterialPageRoute(builder: (context) => LoginPage()),
-          //  );
-          },
-          child:const Icon(Icons.logout, color:Color.fromARGB(255,59,81,33)),
-          backgroundColor: Color.fromARGB(255,225,250,196),
-          
-        ),  
-    );  
-  }  
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Gender:'),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          hint: Text(
+                            'Select',
+                          ),
+                          items: items
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                    ),
+                                  ))
+                              .toList(),
+                          value: selectedValue,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value as String;
+                            });
+                          },
+                          buttonStyleData: const ButtonStyleData(
+                            height: 40,
+                            width: 90,
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      const Text('Date of birth:'),
+                      CupertinoButton(
+                        // Display a CupertinoDatePicker in date picker mode.
+                        onPressed: () => _showDialog(
+                          CupertinoDatePicker(
+                            initialDateTime: date,
+                            mode: CupertinoDatePickerMode.date,
+                            use24hFormat: true,
+                            // This shows day of week alongside day of month
+                            showDayOfWeek: true,
+                            // This is called when the user changes the date.
+                            onDateTimeChanged: (DateTime newDate) {
+                              setState(() => date = newDate);
+                            },
+                          ),
+                        ),
+                        // In this example, the date is formatted manually. You can
+                        // use the intl package to format the value based on the
+                        // user's locale settings.
+                        child: Text(
+                          '${date.month}-${date.day}-${date.year}',
+//                                  style: const TextStyle(
+                          //                                  fontSize: 22.0,
+                          //                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  controller: addressController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Address',
+                    hintText: 'Enter Your Address',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Phone Number',
+                    hintText: 'Enter Your Phone Number',
+                  ),
+                ),
+              ),
+            ],
+          )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _toLoginPage(context),
+        child: const Icon(Icons.logout, color: Color.fromARGB(255, 59, 81, 33)),
+        backgroundColor: Color.fromARGB(255, 225, 250, 196),
+      ),
+    );
+  } //build
+
+  void _toLoginPage(BuildContext context) async {
+    //Unset the 'username' filed in SharedPreference
+    final sp = await SharedPreferences.getInstance();
+    sp.remove('username');
+
+    // Pop the HomePage
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+  } //_toLoginPage
 }
 
-final List<String> items = [
-  'Female',
-  'Male',
-  'Other'
-];
+final List<String> items = ['Female', 'Male', 'Other'];
 String? selectedValue;

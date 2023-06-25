@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grow_well/screens/homePage.dart';
+import 'package:grow_well/screens/HomePage.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(10)),
           )),
-      logo: AssetImage('images/logo3.png'),
+      logo: AssetImage('images/logo.png'),
       title: 'Login',
       onLogin: _loginUser,
       onSignup: _signUpUser,
