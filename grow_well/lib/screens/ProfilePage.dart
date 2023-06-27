@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart.';
+import 'package:flutter/cupertino.dart';
+
 import 'package:grow_well/screens/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -124,8 +125,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             initialDateTime: date,
                             mode: CupertinoDatePickerMode.date,
                             use24hFormat: true,
-                            // This shows day of week alongside day of month
-                            showDayOfWeek: true,
                             // This is called when the user changes the date.
                             onDateTimeChanged: (DateTime newDate) {
                               setState(() => date = newDate);
