@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grow_well/models/dataDB.dart';
+import 'package:grow_well/database/entities/data.dart';
 import 'package:grow_well/screens/AboutPage.dart';
 import 'package:grow_well/screens/InfoPage.dart';
 import 'package:grow_well/screens/NewData.dart';
@@ -115,17 +115,13 @@ class HomePageWidget extends StatelessWidget {
         child: const Icon(Icons.add_outlined,
             color: Color.fromARGB(255, 59, 81, 33)),
         backgroundColor: Color.fromARGB(255, 225, 250, 196),
-        onPressed: () => _toNewDataPage(
-            context, Provider.of<DataDB>(context, listen: false), -1),
+        onPressed: () => _toNewDataPage(context, null),
       ),
     );
   }
 
-  void _toNewDataPage(BuildContext context, DataDB dataDB, int dataIndex) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                NewDataPage(dataDB: dataDB, dataIndex: dataIndex)));
-  }
+  void _toNewDataPage(BuildContext context, Data? data) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage(data: data,)));
+  } //_toNewDataPage
+  
 }

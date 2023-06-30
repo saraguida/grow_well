@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:grow_well/models/data.dart';
-import 'package:grow_well/models/dataDB.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:grow_well/database/entities/data.dart';
+import 'package:grow_well/repositories/databaseRepository.dart';
 import 'package:grow_well/widgets/formTiles.dart';
 import 'package:grow_well/widgets/formSeparator.dart';
 import 'package:grow_well/utils/formats.dart';
+import 'package:provider/provider.dart';
+
 
 
 class NewDataPage extends StatefulWidget {
 
-  final int dataIndex;
-  final DataDB dataDB;
+  final Data? data;
 
   //NewDataPage constructor
-  NewDataPage({Key? key, required this.dataDB, required this.dataIndex}) : super(key: key);
+  NewDataPage({Key? key, required this.data}) : super(key: key);
 
   static const routeDisplayName = 'New Data page';
 
@@ -34,10 +36,14 @@ class _NewDataPageState extends State<NewDataPage> {
   
   @override
   void initState() {
-    _heightController.text = widget.dataIndex == -1 ? '' : widget.dataDB.dataList[widget.dataIndex].height.toString();
-    _weightController.text = widget.dataIndex == -1 ? '' : widget.dataDB.dataList[widget.dataIndex].weight.toString();
-    _hearthRateController.text = widget.dataIndex == -1 ? '' : widget.dataDB.dataList[widget.dataIndex].hearthRate.toString();
-    _selectedDate = widget.dataIndex == -1 ? DateTime.now() : widget.dataDB.dataList[widget.dataIndex].dateTime;
+    _heightController.text =
+        widget.data == null ? '' : widget.data!.height.toString();
+    _weightController.text =
+        widget.data == null ? '' : widget.data!.weight.toString();
+    _hearthRateController.text =
+        widget.data == null ? '' : widget.data!.hearthRate.toString();
+    _selectedDate =
+        widget.data == null ? DateTime.now() : widget.data!.dateTime;
     super.initState();
   } // initState
 
@@ -65,7 +71,7 @@ class _NewDataPageState extends State<NewDataPage> {
       body: Center(
         child: _buildForm(context),
       ),
-      floatingActionButton: widget.dataIndex == -1 ? null : FloatingActionButton(onPressed: () => _deleteAndPop(context), child: Icon(Icons.delete),),
+      floatingActionButton: widget.data == null ? null : FloatingActionButton(onPressed: () => _deleteAndPop(context), child: Icon(Icons.delete),),
     );
   }//build
 
@@ -134,18 +140,31 @@ class _NewDataPageState extends State<NewDataPage> {
   }//_selectDate
 
   //Utility method that validate the form and, if it is valid, save the new data.
-  void _validateAndSave(BuildContext context) {
-    if(formKey.currentState!.validate()){
-      Data newData = Data(height: double.parse(_heightController.text),weight: double.parse(_weightController.text),hearthRate: double.parse(_hearthRateController.text), dateTime: _selectedDate);
-      widget.dataIndex == -1 ? widget.dataDB.addData(newData) : widget.dataDB.editData(widget.dataIndex, newData);
+  void _validateAndSave(BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      //If the original Data passed to the NewDataPage was null, then add a new Data...
+      if(widget.data == null){
+        Data newData =
+          Data(null, double.parse(_heightController.text), double.parse(_weightController.text), double.parse(_hearthRateController.text), _selectedDate);
+          await Provider.of<DatabaseRepository>(context, listen: false)
+              .insertData(newData);
+      }//if
+      //...otherwise, edit it.
+      else{
+        Data updatedData =
+          Data(widget.data!.id, double.parse(_heightController.text), double.parse(_weightController.text), double.parse(_hearthRateController.text), _selectedDate);
+          await Provider.of<DatabaseRepository>(context, listen: false)
+              .updateData(updatedData);
+      }//else
       Navigator.pop(context);
-    }
+    }//if
   } // _validateAndSave
 
-  //Utility method that deletes a meal entry.
-  void _deleteAndPop(BuildContext context){
-    widget.dataDB.deleteData(widget.dataIndex);
+  //Utility method that deletes a data entry.
+  void _deleteAndPop(BuildContext context) async{
+    await Provider.of<DatabaseRepository>(context, listen: false)
+              .removeData(widget.data!);
     Navigator.pop(context);
-  }//_deleteAndPop
+  } //_deleteAndPop
 
 } //NewDataPage
