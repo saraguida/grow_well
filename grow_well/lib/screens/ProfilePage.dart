@@ -131,9 +131,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
  Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: Center(
+        child: Padding(
           padding: EdgeInsets.all(15),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(15),
@@ -216,15 +218,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                         ),
-                        // In this example, the date is formatted manually. You can
-                        // use the intl package to format the value based on the
-                        // user's locale settings.
-
                         child: Text(
                           '${date.month}-${date.day}-${date.year}',
-//                                  style: const TextStyle(
-                          //                                  fontSize: 22.0,
-                          //                              ),
+                          //style: const TextStyle(
+                          //fontSize: 22.0),
                         ),
                       ),
                     ],
@@ -257,6 +254,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           )),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _toLoginPage(context),
         child: const Icon(Icons.logout, color: Color.fromARGB(255, 59, 81, 33)),
