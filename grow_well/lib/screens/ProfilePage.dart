@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final List<String> items = ['Female', 'Male', 'Other'];
 String? selectedValue;
-DateTime date = DateTime(2000, 1, 1);
+DateTime date = DateTime(2018, 1, 1);
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } //gender check
     if (sp.getString('date') == null) {
-      DateTime dateT = DateTime(2000, 1, 1);
+      DateTime dateT = DateTime(2018,1,1);
       String stringDate=date.toString();
       sp.setString('date', stringDate);
       setState(() {
@@ -199,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(
-                        width: 15,
+                       width: 10,
                       ),
                       const Text('Date of birth:'),
                       CupertinoButton(

@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:grow_well/database/entities/data.dart';
 import 'package:grow_well/repositories/databaseRepository.dart';
 import 'package:grow_well/widgets/formTiles.dart';
 import 'package:grow_well/widgets/formSeparator.dart';
 import 'package:grow_well/utils/formats.dart';
 import 'package:provider/provider.dart';
+import 'package:grow_well/models/tables.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'HomePage.dart';
 
 
 
 class NewDataPage extends StatefulWidget {
 
   final Data? data;
+  final List<List<double>> HFAtable;
+  final List<List<double>> WFHtable;
 
-  //NewDataPage constructor
-  NewDataPage({Key? key, required this.data}) : super(key: key);
+  //NewDataPage constructors
+  NewDataPage({Key? key, required this.data, required this.HFAtable,required this.WFHtable}) : super(key: key);
+
+  NewDataPage.fromHomePage():
+  data=null,
+  HFAtable=[],
+  WFHtable=[];
 
   static const routeDisplayName = 'New Data page';
 
@@ -33,9 +43,12 @@ class _NewDataPageState extends State<NewDataPage> {
   TextEditingController _weightController = TextEditingController();
   TextEditingController _hearthRateController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+  double _ReferenceValueHFA=1;
+  double _ReferenceValueWFH=1;
   
   @override
   void initState() {
+    
     _heightController.text =
         widget.data == null ? '' : widget.data!.height.toString();
     _weightController.text =
@@ -44,6 +57,8 @@ class _NewDataPageState extends State<NewDataPage> {
         widget.data == null ? '' : widget.data!.hearthRate.toString();
     _selectedDate =
         widget.data == null ? DateTime.now() : widget.data!.dateTime;
+    _HFAReferenceValue();
+    _WFHReferenceValue(_heightController.text);
     super.initState();
   } // initState
 
@@ -65,7 +80,7 @@ class _NewDataPageState extends State<NewDataPage> {
       appBar: AppBar(
         title: Text(NewDataPage.routeDisplayName),
         actions: [
-          IconButton(onPressed: () => _validateAndSave(context), icon: Icon(Icons.done))
+          IconButton(onPressed: () => [_validateAndSave(context)], icon: Icon(Icons.done))
         ],
       ),
       body: Center(
@@ -133,32 +148,144 @@ class _NewDataPageState extends State<NewDataPage> {
       }
       return null;
     });
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
+    }
   }//_selectDate
 
-  //Utility method that validate the form and, if it is valid, save the new data.
-  void _validateAndSave(BuildContext context) async {
-    if (formKey.currentState!.validate()) {
-      //If the original Data passed to the NewDataPage was null, then add a new Data...
-      if(widget.data == null){
-        Data newData =
-          Data(null, double.parse(_heightController.text), double.parse(_weightController.text), double.parse(_hearthRateController.text), _selectedDate);
-          await Provider.of<DatabaseRepository>(context, listen: false)
-              .insertData(newData);
-      }//if
-      //...otherwise, edit it.
-      else{
-        Data updatedData =
-          Data(widget.data!.id, double.parse(_heightController.text), double.parse(_weightController.text), double.parse(_hearthRateController.text), _selectedDate);
-          await Provider.of<DatabaseRepository>(context, listen: false)
-              .updateData(updatedData);
-      }//else
-      Navigator.pop(context);
-    }//if
-  } // _validateAndSave
+  //HFA indicator
+  Future <double> _HFAReferenceValue() async{
+    final sp = await SharedPreferences.getInstance();
+    String? gender=sp.getString('gender');
+    String? date = sp.getString('date')!;
+    DateTime dateOfBirth = DateTime.parse(date);
+    DateTime currentDate=DateTime.now();
+    final int ActualMonths=(currentDate.year-dateOfBirth.year)*12+(currentDate.month-dateOfBirth.month);
+    List<List<double>> HFAtable = await readExcelFileHFA();
+
+    int rowIndexHFA = 0;
+    int columnIndexHFA = 0;
+
+    // Trova l'indice di riga corrispondente a ActualMonths
+    for (int i = 0; i < HFAtable.length; i++) {
+      List<double> rowHFA = HFAtable[i];
+    if (rowHFA.contains(ActualMonths)) {
+    rowIndexHFA = i;
+    break;
+    }
+    }
+    // Se l'indice di riga è stato trovato, cerca l'indice di colonna in base al genere
+    if (rowIndexHFA !=-1) {
+      //List rowHFA = HFAtable[rowIndexHFA];
+      if (gender == 'Male') {
+        columnIndexHFA = 1; // Indice di colonna per il genere maschile
+      } else if (gender == 'Female') {
+        columnIndexHFA = 2; // Indice di colonna per il genere femminile
+      } else{
+        columnIndexHFA=-1;
+        print('No selected gender');
+      }
+    }
+    double ReferenceValueHFA = HFAtable[rowIndexHFA][columnIndexHFA];
+    setState(() {
+        _ReferenceValueHFA = ReferenceValueHFA;
+      });
+    sp.setDouble('referencevalueHFA', ReferenceValueHFA);
+    return(ReferenceValueHFA);
+  }
+
+  //WFH indicator
+  Future <double> _WFHReferenceValue(String heightText) async{
+    final sp = await SharedPreferences.getInstance();
+    String? gender=sp.getString('gender');
+    double ActualHeight = 0.0;
+    if (heightText.isNotEmpty) {
+      try {
+        ActualHeight = double.parse(heightText);
+      } catch (e) {
+        print('Invalid height value: $heightText');
+      }
+    } else {
+      print('Height value is empty');
+    }
+    List<List<double>> WFHtable = await readExcelFileWFH();
+
+    int rowIndexWFH = 0 ;
+    int columnIndexWFH = 0;
+
+    // Trova l'indice di riga corrispondente all'altezza inserita
+    for (int i = 0; i < WFHtable.length; i++) {
+      List<double> rowWFH = WFHtable[i];
+    if (rowWFH.contains(ActualHeight)) {
+    rowIndexWFH = i;
+    break;
+    }
+    }
+    // Se l'indice di riga è stato trovato, cerca l'indice di colonna in base al genere
+    if (rowIndexWFH != -1) {
+      //List rowWFH = WFHtable[rowIndexWFH];
+      if (gender == 'Male') {
+        columnIndexWFH = 1; // Indice di colonna per il genere maschile
+      } else if (gender == 'Female') {
+        columnIndexWFH = 2; // Indice di colonna per il genere femminile
+      } else{
+        columnIndexWFH=-1;
+        print('No selected gender');
+      }
+    }
+    double ReferenceValueWFH = WFHtable[rowIndexWFH][columnIndexWFH];
+    setState(() {
+        _ReferenceValueWFH = ReferenceValueWFH;
+      });
+    sp.setDouble('referencevalueWFH', ReferenceValueWFH);
+    return(ReferenceValueWFH);
+  }
+
+  // Utility method that validate the form and, if it is valid, save the new data.
+void _validateAndSave(BuildContext context) async {
+  if (formKey.currentState!.validate()) {
+    String heightText = _heightController.text; // Salva il valore di _heightController.text in una variabile temporanea
+
+    // Calcola il valore di riferimento per l'indicatore WFH utilizzando _WFHReferenceValue
+    double referenceValueWFH = await _WFHReferenceValue(heightText);
+
+    // Se l'originale Data passato a NewDataPage era nullo, allora aggiungi una nuova Data...
+    if (widget.data == null) {
+      Data newData = Data(
+        null,
+        double.parse(_heightController.text),
+        double.parse(_weightController.text),
+        double.parse(_hearthRateController.text),
+        _selectedDate,
+        _ReferenceValueHFA,
+        referenceValueWFH, // Utilizza il valore di riferimento WFH calcolato
+      );
+      await Provider.of<DatabaseRepository>(context, listen: false).insertData(newData);
+      
+    } // if
+    // ...altrimenti, modificalo.
+    else {
+      Data updatedData = Data(
+        widget.data!.id,
+        double.parse(_heightController.text),
+        double.parse(_weightController.text),
+        double.parse(_hearthRateController.text),
+        _selectedDate,
+        _ReferenceValueHFA,
+        referenceValueWFH, // Utilizza il valore di riferimento WFH calcolato
+      );
+      await Provider.of<DatabaseRepository>(context, listen: false).updateData(updatedData);
+    } // else
+      final sp = await SharedPreferences.getInstance();
+      sp.setDouble('actualHeight', double.parse(_heightController.text));
+      sp.setDouble('actualWeight', double.parse(_weightController.text));
+    Navigator.pushReplacement(context,
+    MaterialPageRoute(builder: (context) => HomePage()),);
+  } // if
+} // _validateAndSave
+
 
   //Utility method that deletes a data entry.
   void _deleteAndPop(BuildContext context) async{

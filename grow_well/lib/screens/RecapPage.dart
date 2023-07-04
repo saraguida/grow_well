@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:grow_well/database/entities/data.dart';
 import 'package:grow_well/repositories/databaseRepository.dart';
 import 'package:grow_well/screens/NewData.dart';
@@ -40,8 +39,8 @@ class RecapPage extends StatelessWidget {
                               Text('Height : ${dataList[dataIndex].height} cm\n'
                                    'Weight : ${dataList[dataIndex].weight} kg\n'
                                    'Hearth rate : ${dataList[dataIndex].hearthRate} bpm\n'
-                                   'Height for age : formula\n'
-                                   'Weight for height : formula\n',
+                                   'Height reference value :${dataList[dataIndex].ReferenceValueHFA} cm\n'
+                                   'Weight reference value : ${dataList[dataIndex].ReferenceValueWFH} kg\n',
                               ),
                           subtitle: Text('${Formats.fullDateFormatNoSeconds.format(dataList[dataIndex].dateTime)}'),
                           onTap: () => _toNewDataPage(context, dataList[dataIndex]),
@@ -67,6 +66,6 @@ class RecapPage extends StatelessWidget {
 
   //Utility method to navigate to NewDataPage
   void _toNewDataPage(BuildContext context, Data? data) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage(data: data,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage(data: data,HFAtable:[],WFHtable: [],)));
   } //_toNewDataPage
 } //RecapPage

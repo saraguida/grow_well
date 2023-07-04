@@ -6,6 +6,7 @@ import 'package:grow_well/screens/NewData.dart';
 import 'package:grow_well/screens/ProfilePage.dart';
 import 'package:grow_well/screens/RecapPage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -98,17 +100,34 @@ class HomePageWidget extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Text(
               'Grafico del battito cardiaco',
               style: TextStyle(fontSize: 24),
             ),
             SizedBox(height: 16),
-            Text(
-              'Tabella con i valori di PA e AE',
-              style: TextStyle(fontSize: 24),
+            FutureBuilder<String>(
+              future: getValuesComparison(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Se il valore è ancora in attesa, mostra un indicatore di caricamento
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  // Se il valore è stato ottenuto con successo, mostralo nel testo
+                  return Text(
+                    '${snapshot.data}',
+                    //style: TextStyle(fontSize: 24),
+                  );
+                } else {
+                  // Se si verifica un errore durante l'ottenimento del valore, mostra un messaggio di errore
+                  return Text(
+                    'Errore durante il recupero del valore',
+                    style: TextStyle(fontSize: 24),
+                  );
+                };
+              },
             ),
-          ],
+          ], // children
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -121,7 +140,35 @@ class HomePageWidget extends StatelessWidget {
   }
 
   void _toNewDataPage(BuildContext context, Data? data) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage(data: data,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
   } //_toNewDataPage
-  
+
+  Future<String> getValuesComparison() async {
+    final sp = await SharedPreferences.getInstance();
+    String value='';
+    double? actualHeight = sp.getDouble('actualHeight');
+    double? actualWeight = sp.getDouble('actualWeight');
+    double? referencevalueHFA = sp.getDouble('referencevalueHFA');
+    double? referencevalueWFH = sp.getDouble('referencevalueWFH');
+    print(sp.getDouble('actualHeight'));
+    if (sp.getDouble('actualHeight') != null){
+      String stuntingString = 'NOT AT RISK';
+      if (actualHeight!<referencevalueHFA!){
+        stuntingString = 'AT RISK';
+      }
+      String wastingString = 'NOT AT RISK';
+      if (actualWeight!<referencevalueWFH!){
+        wastingString = 'AT RISK';
+      }
+      value ='Based on your age, your height should be greater than $referencevalueHFA cm.\n'
+                    'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
+                    'Based on your height, your weight should be greater than $referencevalueWFH kg.\n'
+                    'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
+    }
+    else{
+      value = 'Enter your personal data in the Profile and add your current anthropometric data.';
+    }
+    return value;
+  }
+
 }

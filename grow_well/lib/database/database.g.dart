@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Data` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `height` REAL NOT NULL, `weight` REAL NOT NULL, `hearthRate` REAL NOT NULL, `dateTime` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Data` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `height` REAL NOT NULL, `weight` REAL NOT NULL, `hearthRate` REAL NOT NULL, `dateTime` INTEGER NOT NULL, `ReferenceValueHFA` REAL, `ReferenceValueWFH` REAL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -112,7 +112,9 @@ class _$DataDao extends DataDao {
                   'height': item.height,
                   'weight': item.weight,
                   'hearthRate': item.hearthRate,
-                  'dateTime': _dateTimeConverter.encode(item.dateTime)
+                  'dateTime': _dateTimeConverter.encode(item.dateTime),
+                  'ReferenceValueHFA': item.ReferenceValueHFA,
+                  'ReferenceValueWFH': item.ReferenceValueWFH
                 }),
         _dataUpdateAdapter = UpdateAdapter(
             database,
@@ -123,7 +125,9 @@ class _$DataDao extends DataDao {
                   'height': item.height,
                   'weight': item.weight,
                   'hearthRate': item.hearthRate,
-                  'dateTime': _dateTimeConverter.encode(item.dateTime)
+                  'dateTime': _dateTimeConverter.encode(item.dateTime),
+                  'ReferenceValueHFA': item.ReferenceValueHFA,
+                  'ReferenceValueWFH': item.ReferenceValueWFH
                 }),
         _dataDeletionAdapter = DeletionAdapter(
             database,
@@ -134,7 +138,9 @@ class _$DataDao extends DataDao {
                   'height': item.height,
                   'weight': item.weight,
                   'hearthRate': item.hearthRate,
-                  'dateTime': _dateTimeConverter.encode(item.dateTime)
+                  'dateTime': _dateTimeConverter.encode(item.dateTime),
+                  'ReferenceValueHFA': item.ReferenceValueHFA,
+                  'ReferenceValueWFH': item.ReferenceValueWFH
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -157,7 +163,9 @@ class _$DataDao extends DataDao {
             row['height'] as double,
             row['weight'] as double,
             row['hearthRate'] as double,
-            _dateTimeConverter.decode(row['dateTime'] as int)));
+            _dateTimeConverter.decode(row['dateTime'] as int),
+            row['ReferenceValueHFA'] as double?,
+            row['ReferenceValueWFH'] as double?));
   }
 
   @override
