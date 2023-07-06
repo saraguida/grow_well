@@ -5,7 +5,7 @@ import 'package:grow_well/screens/InfoPage.dart';
 import 'package:grow_well/screens/NewData.dart';
 import 'package:grow_well/screens/ProfilePage.dart';
 import 'package:grow_well/screens/RecapPage.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -124,7 +123,8 @@ class HomePageWidget extends StatelessWidget {
                     'Errore durante il recupero del valore',
                     style: TextStyle(fontSize: 24),
                   );
-                };
+                }
+                ;
               },
             ),
           ], // children
@@ -140,35 +140,40 @@ class HomePageWidget extends StatelessWidget {
   }
 
   void _toNewDataPage(BuildContext context, Data? data) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
   } //_toNewDataPage
 
   Future<String> getValuesComparison() async {
     final sp = await SharedPreferences.getInstance();
-    String value='';
+    String value = '';
     double? actualHeight = sp.getDouble('actualHeight');
     double? actualWeight = sp.getDouble('actualWeight');
     double? referencevalueHFA = sp.getDouble('referencevalueHFA');
     double? referencevalueWFH = sp.getDouble('referencevalueWFH');
-    print(sp.getDouble('actualHeight'));
-    if (sp.getDouble('actualHeight') != null){
+    //print(sp.getDouble('actualHeight'));
+    print("STAMPA VALORI SP SALVATI:");
+    print(sp.getDouble('0'));
+    print(sp.getStringList('dates'));
+
+    if (sp.getDouble('actualHeight') != null) {
       String stuntingString = 'NOT AT RISK';
-      if (actualHeight!<referencevalueHFA!){
+      if (actualHeight! < referencevalueHFA!) {
         stuntingString = 'AT RISK';
       }
       String wastingString = 'NOT AT RISK';
-      if (actualWeight!<referencevalueWFH!){
+      if (actualWeight! < referencevalueWFH!) {
         wastingString = 'AT RISK';
       }
-      value ='Based on your age, your height should be greater than $referencevalueHFA cm.\n'
-                    'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
-                    'Based on your height, your weight should be greater than $referencevalueWFH kg.\n'
-                    'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
-    }
-    else{
-      value = 'Enter your personal data in the Profile and add your current anthropometric data.';
+      value =
+          'Based on your age, your height should be greater than $referencevalueHFA cm.\n'
+          'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
+          'Based on your height, your weight should be greater than $referencevalueWFH kg.\n'
+          'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
+    } else {
+      value =
+          'Enter your personal data in the Profile and add your current anthropometric data.';
     }
     return value;
   }
-
 }

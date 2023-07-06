@@ -271,7 +271,7 @@ class _NewDataPageState extends State<NewDataPage> {
 
     if (result != null) {
       print("Request successful!");
-      resultHR = result[0].value; //mettere 6
+      resultHR = result[result.length - 1].value;
       print("Value requested: $resultHR");
     } else {
       print("Request failed.");
@@ -427,6 +427,11 @@ class _NewDataPageState extends State<NewDataPage> {
       // [RestingHR(time: 2023-05-04 00:00:00.000, value: 52.93),
       // RestingHR(time: 2023-05-05 00:00:00.000, value: 52.85)]
       print("Risultato 0 --> ${result[0].value}");
+
+      sp.setDouble("0", result[0].value);
+      sp.setDouble("1", result[1].value);
+      sp.setStringList(
+          "dates", [result[0].time.toString(), result[1].time.toString()]);
     } //if
     else {
       result = null;
