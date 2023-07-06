@@ -3,6 +3,12 @@ import 'package:grow_well/screens/HomePage.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/////// for authorization
+import 'dart:convert';
+import 'package:grow_well/utils/impact.dart';
+import 'package:http/http.dart' as http;
+///////
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -100,8 +106,41 @@ class _LoginPageState extends State<LoginPage> {
     );
   } // build
 
+/*
   void _toHomePage(BuildContext context) {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+  } //_toHomePage */
+
+  Future<void> _toHomePage(BuildContext context) async {
+    final result = await _authorize(); // return statusCode
+    final message = result == 200 ? 'Request successful' : 'Request failed';
+    print(message);
+
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
   } //_toHomePage
+
+  // AUTHORIZATION
+  //This method allows to obtain the JWT token pair from IMPACT and store it in SharedPreferences
+  Future<int?> _authorize() async {
+    //Create the request
+    final url = Impact.baseUrl + Impact.tokenEndpoint;
+    final body = {'username': Impact.username, 'password': Impact.password};
+
+    //Get the response
+    print('Calling: $url');
+    final response = await http.post(Uri.parse(url), body: body);
+
+    //If 200, set the token
+    if (response.statusCode == 200) {
+      final decodedResponse = jsonDecode(response.body);
+      final sp = await SharedPreferences.getInstance();
+      sp.setString('access', decodedResponse['access']);
+      sp.setString('refresh', decodedResponse['refresh']);
+    } //if
+
+    //Just return the status code
+    return response.statusCode;
+  } //_authorize
 } // LoginScreen
