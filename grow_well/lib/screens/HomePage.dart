@@ -8,6 +8,10 @@ import 'package:grow_well/screens/RecapPage.dart';
 //import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Per grafico
+import 'package:grow_well/models/LineChartContent.dart';
+//
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -100,10 +104,12 @@ class HomePageWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            /*
             Text(
               'Grafico del battito cardiaco',
               style: TextStyle(fontSize: 24),
-            ),
+            ), */
+
             SizedBox(height: 16),
             FutureBuilder<String>(
               future: getValuesComparison(),
@@ -152,9 +158,9 @@ class HomePageWidget extends StatelessWidget {
     double? referencevalueHFA = sp.getDouble('referencevalueHFA');
     double? referencevalueWFH = sp.getDouble('referencevalueWFH');
     //print(sp.getDouble('actualHeight'));
-    print("STAMPA VALORI SP SALVATI:");
-    print(sp.getDouble('0'));
-    print(sp.getStringList('dates'));
+    //print("STAMPA VALORI SP SALVATI:");
+    //print(sp.getDouble('0'));
+    //print(sp.getStringList('dates'));
 
     if (sp.getDouble('actualHeight') != null) {
       String stuntingString = 'NOT AT RISK';
@@ -176,4 +182,12 @@ class HomePageWidget extends StatelessWidget {
     }
     return value;
   }
-}
+
+  Future<String> getGraph() async {
+    final sp = await SharedPreferences.getInstance();
+
+    String graph = "";
+
+    return graph;
+  } //getGraph
+}//HomePageWidget

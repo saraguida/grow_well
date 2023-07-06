@@ -18,6 +18,7 @@ import 'package:grow_well/models/RestingHR.dart';
 import 'package:grow_well/utils/impact.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:intl/intl.dart'; // for current date
 ////
 
 class NewDataPage extends StatefulWidget {
@@ -272,7 +273,7 @@ class _NewDataPageState extends State<NewDataPage> {
     if (result != null) {
       print("Request successful!");
       resultHR = result[result.length - 1].value;
-      print("Value requested: $resultHR");
+      //print("Value requested: $resultHR");
     } else {
       print("Request failed.");
     }
@@ -356,8 +357,11 @@ class _NewDataPageState extends State<NewDataPage> {
         '${_selectedDate.subtract(Duration(days: 7)).year}-${_selectedDate.subtract(Duration(days: 7)).month.toString().padLeft(2, '0')}-${_selectedDate.subtract(Duration(days: 7)).day.toString().padLeft(2, '0')}';
     */
 
-    final start_date = '2023-05-04';
-    final end_date = '2023-05-05';
+    DateTime now = DateTime.now();
+    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateTime sevendaysago = now.subtract(Duration(days: 7));
+    final start_date = DateFormat('yyyy-MM-dd').format(sevendaysago).toString();
+    final end_date = DateFormat('yyyy-MM-dd').format(yesterday).toString();
 
     final url = Impact.baseUrl +
         Impact.restingHREndpoint +
@@ -386,7 +390,7 @@ class _NewDataPageState extends State<NewDataPage> {
           {date: 2023-05-05, data: {time: 00:00:00, value: 52.85, error: 6.8}}
         ]
       }
-      */
+      ///////
       print(
           "decodedResponse['data'].length è il numero di giorni per cui ho il dato: ${decodedResponse['data'].length}");
       print("${decodedResponse['data']}"); // entrambi i giorni
@@ -406,6 +410,7 @@ class _NewDataPageState extends State<NewDataPage> {
           "Type of value: ${decodedResponse['data'][0]['data']['value'].runtimeType}");
       print(
           "Type of error: ${decodedResponse['data'][0]['data']['error'].runtimeType}");
+*/
 
       result = [];
       for (var i = 0; i < decodedResponse['data'].length; i++) {
@@ -416,9 +421,10 @@ class _NewDataPageState extends State<NewDataPage> {
         result.add(RestingHR.fromJson(decodedResponse['data'][i]['date'],
             decodedResponse['data'][i]['data']));
 
+        /*
         print("Stampo oggetto json numero $i");
         print(RestingHR.fromJson(decodedResponse['data'][i]['date'],
-            decodedResponse['data'][i]['data']));
+            decodedResponse['data'][i]['data'])); */
 
         // invoca il named method " Steps.fromJson" della classe
       } //for
@@ -426,12 +432,25 @@ class _NewDataPageState extends State<NewDataPage> {
       print(result);
       // [RestingHR(time: 2023-05-04 00:00:00.000, value: 52.93),
       // RestingHR(time: 2023-05-05 00:00:00.000, value: 52.85)]
-      print("Risultato 0 --> ${result[0].value}");
+      //print("Risultato 0 --> ${result[0].value}");
 
+      // Save all the 7 values in sp
       sp.setDouble("0", result[0].value);
       sp.setDouble("1", result[1].value);
-      sp.setStringList(
-          "dates", [result[0].time.toString(), result[1].time.toString()]);
+      sp.setDouble("2", result[2].value);
+      sp.setDouble("3", result[3].value);
+      sp.setDouble("4", result[4].value);
+      sp.setDouble("5", result[5].value);
+      sp.setDouble("6", result[6].value);
+      sp.setStringList("dates", [
+        result[0].time.toString(),
+        result[1].time.toString(),
+        result[2].time.toString(),
+        result[3].time.toString(),
+        result[4].time.toString(),
+        result[5].time.toString(),
+        result[6].time.toString()
+      ]);
     } //if
     else {
       result = null;

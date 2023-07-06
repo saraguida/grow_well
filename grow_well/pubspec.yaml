@@ -52,6 +52,9 @@ dependencies:
   http: ^0.13.6
   jwt_decoder: ^2.0.1
 
+  # dep per grafico
+  simple_line_chart: ^1.4.1
+
 
 dev_dependencies:
   flutter_test:
