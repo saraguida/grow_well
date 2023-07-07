@@ -134,29 +134,45 @@ class HomePageWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LineChartContent(),
-            SizedBox(height: 40),
-            FutureBuilder<String>(
-              future: getValuesComparison(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Se il valore è ancora in attesa, mostra un indicatore di caricamento
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasData) {
-                  // Se il valore è stato ottenuto con successo, mostralo nel testo
-                  return Text(
-                    '${snapshot.data}',
-                    //style: TextStyle(fontSize: 24),
-                  );
-                } else {
-                  // Se si verifica un errore durante l'ottenimento del valore, mostra un messaggio di errore
-                  return Text(
-                    'Errore durante il recupero del valore',
-                    style: TextStyle(fontSize: 24),
-                  );
-                }
-                ;
-              },
+            Container(
+                padding: const EdgeInsets.fromLTRB(10, 0, 12, 0),
+                child: Text("RESTING HEART RATE\n(the last 7 days)",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.center)),
+            Container(
+                padding: const EdgeInsets.fromLTRB(10, 0, 12, 0),
+                child: LineChartContent()),
+            //LineChartContent(),
+            SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
+              child: FutureBuilder<String>(
+                future: getValuesComparison(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Se il valore è ancora in attesa, mostra un indicatore di caricamento
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData) {
+                    // Se il valore è stato ottenuto con successo, mostralo nel testo
+                    return Text('${snapshot.data}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 18,
+                            color: Colors.black),
+                        textAlign: TextAlign.justify);
+                  } else {
+                    // Se si verifica un errore durante l'ottenimento del valore, mostra un messaggio di errore
+                    return Text(
+                      'Errore durante il recupero del valore',
+                      style: TextStyle(fontSize: 24),
+                    );
+                  }
+                  ;
+                },
+              ),
             ),
           ], // children
         ),
@@ -183,10 +199,6 @@ class HomePageWidget extends StatelessWidget {
     double? actualWeight = sp.getDouble('actualWeight');
     double? referencevalueHFA = sp.getDouble('referencevalueHFA');
     double? referencevalueWFH = sp.getDouble('referencevalueWFH');
-    //print(sp.getDouble('actualHeight'));
-    //print("STAMPA VALORI SP SALVATI:");
-    //print(sp.getDouble('0'));
-    //print(sp.getStringList('dates'));
 
     if (sp.getDouble('actualHeight') != null) {
       String stuntingString = 'NOT AT RISK';

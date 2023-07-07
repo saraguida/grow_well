@@ -24,12 +24,33 @@ class _LineChartContentState extends State<LineChartContent> {
   void _initializeData() async {
     // Perform asynchronous operations
     List<DataPoint> dataPoints = await _createDataPoints();
+    List<DataPoint> dataPoints_upper = [
+      DataPoint(x: 0, y: 80),
+      DataPoint(x: 1, y: 80),
+      DataPoint(x: 2, y: 80),
+      DataPoint(x: 3, y: 80),
+      DataPoint(x: 4, y: 80),
+      DataPoint(x: 5, y: 80),
+      DataPoint(x: 6, y: 80)
+    ];
+
+    List<DataPoint> dataPoints_lower = [
+      DataPoint(x: 0, y: 30),
+      DataPoint(x: 1, y: 30),
+      DataPoint(x: 2, y: 30),
+      DataPoint(x: 3, y: 30),
+      DataPoint(x: 4, y: 30),
+      DataPoint(x: 5, y: 30),
+      DataPoint(x: 6, y: 30)
+    ];
 
     if (dataPoints.length != 0) {
       setState(() {
         // Update the state of the widget
         _data = LineChartData(datasets: [
           Dataset(label: 'Resting Heart Rate', dataPoints: dataPoints),
+          Dataset(label: 'Upper bound', dataPoints: dataPoints_upper),
+          Dataset(label: 'Lower bound', dataPoints: dataPoints_lower)
         ]);
       });
     }
@@ -38,17 +59,23 @@ class _LineChartContentState extends State<LineChartContent> {
   @override
   Widget build(BuildContext context) {
     final template = LineChartStyle.fromTheme(context);
-    final style = template.copyWithAxes(
-        bottomAxisStyle: template.bottomAxisStyle?.copyWith(
-          labelIncrementMultiples: 1,
-          labelOnDatapoints: true,
-          //labelProvider: (p0) {},
-        ),
-        leftAxisStyle: template.leftAxisStyle?.copyWith(
-          labelIncrementMultiples: 1,
-          marginAbove: 3,
-          marginBelow: 3,
-        ));
+    final style = template
+        .copyWithAxes(
+            bottomAxisStyle: template.bottomAxisStyle?.copyWith(
+              labelIncrementMultiples: 1,
+              labelOnDatapoints: true,
+              //labelProvider: (p0) {},
+            ),
+            leftAxisStyle: template.leftAxisStyle?.copyWith(
+              labelIncrementMultiples: 1,
+              marginAbove: 10,
+              marginBelow: 10,
+            ))
+        .copyWith(datasetStyles: [
+      DatasetStyle(color: Colors.black, fillOpacity: 0, lineSize: 2),
+      DatasetStyle(color: Colors.red, fillOpacity: 0, lineSize: 2),
+      DatasetStyle(color: Colors.orange.shade800, fillOpacity: 0, lineSize: 2)
+    ]);
 
     return Column(children: [
       Padding(
