@@ -97,6 +97,36 @@ class _HomePageState extends State<HomePage> {
 class HomePageWidget extends StatelessWidget {
   const HomePageWidget({super.key});
 
+  //////// GRAFICO formattato dal pacchetto
+/*
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+          child: Padding(
+              padding: EdgeInsets.only(left: 16, right: 16),
+              child: LayoutBuilder(builder:
+                  (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                    child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: viewportConstraints.maxHeight,
+                  ),
+                  child: LineChartContent(),
+                ));
+              }))),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add_outlined,
+            color: Color.fromARGB(255, 59, 81, 33)),
+        backgroundColor: Color.fromARGB(255, 225, 250, 196),
+        onPressed: () => _toNewDataPage(context, null),
+      ),
+    );
+  } //build
+*/
+//////////////
+
+  ////// BUILD ORIGINALE
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,13 +134,8 @@ class HomePageWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            /*
-            Text(
-              'Grafico del battito cardiaco',
-              style: TextStyle(fontSize: 24),
-            ), */
-
-            SizedBox(height: 16),
+            LineChartContent(),
+            SizedBox(height: 40),
             FutureBuilder<String>(
               future: getValuesComparison(),
               builder: (context, snapshot) {
@@ -143,7 +168,8 @@ class HomePageWidget extends StatelessWidget {
         onPressed: () => _toNewDataPage(context, null),
       ),
     );
-  }
+  } //build
+  ///////////////////////////////////////
 
   void _toNewDataPage(BuildContext context, Data? data) {
     Navigator.push(context,
@@ -181,13 +207,21 @@ class HomePageWidget extends StatelessWidget {
           'Enter your personal data in the Profile and add your current anthropometric data.';
     }
     return value;
-  }
+  } //getValuesComparison
 
-  Future<String> getGraph() async {
+  Future<List<double?>> get() async {
     final sp = await SharedPreferences.getInstance();
 
-    String graph = "";
+    List<double?> listDataPoints = [
+      sp.getDouble('0'),
+      sp.getDouble("1"),
+      sp.getDouble("2"),
+      sp.getDouble("3"),
+      sp.getDouble("4"),
+      sp.getDouble("5"),
+      sp.getDouble("6")
+    ];
 
-    return graph;
+    return listDataPoints;
   } //getGraph
 }//HomePageWidget

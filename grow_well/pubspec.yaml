@@ -45,7 +45,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
   #flutter_cupertino_date_picker: ^1.0.26
-  intl: ^0.18.1
+  #intl: ^0.18.1
+  intl: ^0.17.0
   provider: ^6.0.5
 
   # dependencies per authorization e impact
@@ -54,6 +55,8 @@ dependencies:
 
   # dep per grafico
   simple_line_chart: ^1.4.1
+  #flutter_charts: ^0.5.1
+  syncfusion_flutter_charts: ^19.2.47
 
 
 dev_dependencies:

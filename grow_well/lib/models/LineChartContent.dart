@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:simple_line_chart/simple_line_chart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LineChartContent extends StatefulWidget {
-  const LineChartContent({Key? key}) : super(key: key);
+  LineChartContent({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -13,56 +12,110 @@ class LineChartContent extends StatefulWidget {
 }
 
 class _LineChartContentState extends State<LineChartContent> {
-  late final LineChartData data;
+  LineChartData _data =
+      LineChartData(datasets: [Dataset(label: 'First', dataPoints: [])]);
 
   @override
   void initState() {
     super.initState();
+    _initializeData();
+  }
 
-    // create a data model
-    data = LineChartData(datasets: [
-      Dataset(
-          label: 'First', dataPoints: _createDataPoints(offsetInDegrees: 90)),
-      Dataset(
-          label: 'Second', dataPoints: _createDataPoints(offsetInDegrees: 0)),
-      Dataset(
-          label: 'Third', dataPoints: _createDataPoints(offsetInDegrees: 180))
-    ]);
+  void _initializeData() async {
+    // Perform asynchronous operations
+    List<DataPoint> dataPoints = await _createDataPoints();
+
+    if (dataPoints.length != 0) {
+      setState(() {
+        // Update the state of the widget
+        _data = LineChartData(datasets: [
+          Dataset(label: 'Resting Heart Rate', dataPoints: dataPoints),
+        ]);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final template = LineChartStyle.fromTheme(context);
-    final style = template.copyRemoving(legend: true).copyWithAxes(
-        topAxisStyle: template.topAxisStyle,
+    final style = template.copyWithAxes(
+        bottomAxisStyle: template.bottomAxisStyle?.copyWith(
+          labelIncrementMultiples: 1,
+          labelOnDatapoints: true,
+          //labelProvider: (p0) {},
+        ),
         leftAxisStyle: template.leftAxisStyle?.copyWith(
-            labelIncrementMultiples: 100,
-            marginAbove: 10,
-            marginBelow: 10,
-            applyMarginBelow: (minY) => minY < 0.0));
+          labelIncrementMultiples: 1,
+          marginAbove: 3,
+          marginBelow: 3,
+        ));
+
     return Column(children: [
       Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 20),
           child: LineChart(
               // chart is styled
+              //style: LineChartStyle.fromTheme(context),
               style: style,
               seriesHeight: 300,
               // chart has data
-              data: data))
+              data: _data))
     ]);
   }
-}
+} //_LineChartContentState
 
-// data points are created on a sine curve here,
-// but you can plot any data you like
-List<DataPoint> _createDataPoints({required int offsetInDegrees}) {
+// METHOD FOR DATAPOINTS
+Future<List<DataPoint>> _createDataPoints() async {
+  //final listDataPoints = await getDataPoints();
+
+  // dataPoints è una lista di DataPoint con due variabili di instance, x e y
   List<DataPoint> dataPoints = [];
-  const degreesToRadians = (pi / 180);
-  for (int x = 0; x < 180; x += 20) {
-    final di = (x * 2).toDouble() * degreesToRadians;
-    dataPoints.add(DataPoint(
-        x: x.toDouble(),
-        y: (100.0 * ((sin(di + offsetInDegrees) + 1.0) / 2.0))));
+
+  final sp = await SharedPreferences.getInstance();
+
+  if (sp.getStringList("dates") != null) {
+    List<double?> listDataPoints = [
+      sp.getDouble('0'),
+      sp.getDouble("1"),
+      sp.getDouble("2"),
+      sp.getDouble("3"),
+      sp.getDouble("4"),
+      sp.getDouble("5"),
+      sp.getDouble("6")
+    ];
+
+    List<DataPoint> dataPoints = [
+      DataPoint(x: 0, y: listDataPoints[0]!.toDouble()),
+      DataPoint(x: 1, y: listDataPoints[1]!.toDouble()),
+      DataPoint(x: 2, y: listDataPoints[2]!.toDouble()),
+      DataPoint(x: 3, y: listDataPoints[3]!.toDouble()),
+      DataPoint(x: 4, y: listDataPoints[4]!.toDouble()),
+      DataPoint(x: 5, y: listDataPoints[5]!.toDouble()),
+      DataPoint(x: 6, y: listDataPoints[6]!.toDouble())
+    ];
+    return dataPoints;
+  } else {
+    return dataPoints;
   }
-  return dataPoints;
+} //_createDataPoints
+
+
+
+//////////////////////////////////////////////////////
+/// NOT USED ANYMORE 
+/*
+Future<List<double?>> getDataPoints() async {
+  final sp = await SharedPreferences.getInstance();
+  List<double?> listDataPoints = [
+    sp.getDouble('0'),
+    sp.getDouble("1"),
+    sp.getDouble("2"),
+    sp.getDouble("3"),
+    sp.getDouble("4"),
+    sp.getDouble("5"),
+    sp.getDouble("6")
+  ];
+
+  return listDataPoints;
 }
+*/
