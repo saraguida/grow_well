@@ -25,23 +25,23 @@ class _LineChartContentState extends State<LineChartContent> {
     // Perform asynchronous operations
     List<DataPoint> dataPoints = await _createDataPoints();
     List<DataPoint> dataPoints_upper = [
-      DataPoint(x: 0, y: 80),
-      DataPoint(x: 1, y: 80),
-      DataPoint(x: 2, y: 80),
-      DataPoint(x: 3, y: 80),
-      DataPoint(x: 4, y: 80),
-      DataPoint(x: 5, y: 80),
-      DataPoint(x: 6, y: 80)
+      DataPoint(x: 0, y: 108.28),
+      DataPoint(x: 1, y: 108.28),
+      DataPoint(x: 2, y: 108.28),
+      DataPoint(x: 3, y: 108.28),
+      DataPoint(x: 4, y: 108.28),
+      DataPoint(x: 5, y: 108.28),
+      DataPoint(x: 6, y: 108.28)
     ];
 
     List<DataPoint> dataPoints_lower = [
-      DataPoint(x: 0, y: 30),
-      DataPoint(x: 1, y: 30),
-      DataPoint(x: 2, y: 30),
-      DataPoint(x: 3, y: 30),
-      DataPoint(x: 4, y: 30),
-      DataPoint(x: 5, y: 30),
-      DataPoint(x: 6, y: 30)
+      DataPoint(x: 0, y: 101.03),
+      DataPoint(x: 1, y: 101.03),
+      DataPoint(x: 2, y: 101.03),
+      DataPoint(x: 3, y: 101.03),
+      DataPoint(x: 4, y: 101.03),
+      DataPoint(x: 5, y: 101.03),
+      DataPoint(x: 6, y: 101.03)
     ];
 
     if (dataPoints.length != 0) {
