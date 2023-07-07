@@ -357,11 +357,11 @@ class _NewDataPageState extends State<NewDataPage> {
         '${_selectedDate.subtract(Duration(days: 7)).year}-${_selectedDate.subtract(Duration(days: 7)).month.toString().padLeft(2, '0')}-${_selectedDate.subtract(Duration(days: 7)).day.toString().padLeft(2, '0')}';
     */
 
-    DateTime now = DateTime.now();
-    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateTime now = _selectedDate;
+    //DateTime yesterday = now.subtract(Duration(days: 1));
     DateTime sevendaysago = now.subtract(Duration(days: 7));
     final start_date = DateFormat('yyyy-MM-dd').format(sevendaysago).toString();
-    final end_date = DateFormat('yyyy-MM-dd').format(yesterday).toString();
+    final end_date = DateFormat('yyyy-MM-dd').format(now).toString();
 
     final url = Impact.baseUrl +
         Impact.restingHREndpoint +
