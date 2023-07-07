@@ -146,9 +146,9 @@ class HomePageWidget extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(10, 0, 12, 0),
                 child: LineChartContent()),
             //LineChartContent(),
-            SizedBox(height: 20),
+            SizedBox(height: 25),
             Container(
-              padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: FutureBuilder<String>(
                 future: getValuesComparison(),
                 builder: (context, snapshot) {
