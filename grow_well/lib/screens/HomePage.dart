@@ -5,8 +5,13 @@ import 'package:grow_well/screens/InfoPage.dart';
 import 'package:grow_well/screens/NewData.dart';
 import 'package:grow_well/screens/ProfilePage.dart';
 import 'package:grow_well/screens/RecapPage.dart';
-import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+//import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Per grafico
+import 'package:grow_well/models/LineChartContent.dart';
+//
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,7 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -97,37 +101,102 @@ class HomePageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Grafico del battito cardiaco',
-              style: TextStyle(fontSize: 24),
+            Expanded(
+                child: Container(
+              child: Align(
+                alignment: Alignment.center,
+                child: FutureBuilder<String>(
+                  future: getLastDates(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      return Text(
+                        '${snapshot.data}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 37, 50, 21),
+                          backgroundColor: Colors.lightGreen.withOpacity(0.5),
+                        ),
+                        textAlign: TextAlign.center,
+                      );
+                    } else {
+                      return Text(
+                        'Errore durante il recupero del valore',
+                        style: TextStyle(fontSize: 24),
+                      );
+                    }
+                  },
+                ),
+              ),
+            )),
+            Expanded(
+              flex: 5,
+              child: LineChartContent(),
             ),
-            SizedBox(height: 16),
-            FutureBuilder<String>(
-              future: getValuesComparison(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Se il valore è ancora in attesa, mostra un indicatore di caricamento
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasData) {
-                  // Se il valore è stato ottenuto con successo, mostralo nel testo
-                  return Text(
-                    '${snapshot.data}',
-                    //style: TextStyle(fontSize: 24),
-                  );
-                } else {
-                  // Se si verifica un errore durante l'ottenimento del valore, mostra un messaggio di errore
-                  return Text(
-                    'Errore durante il recupero del valore',
-                    style: TextStyle(fontSize: 24),
-                  );
-                };
-              },
+            Expanded(
+                child: Container(
+                    child: Text(
+              'Your resting HR should be between 101.03 and 108.28 bpm.\n',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.justify,
+            ))),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "HEIGHT FOR AGE AND\nWEIGHT FOR HEIGHT",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Color.fromARGB(255, 37, 50, 21),
+                    backgroundColor: Colors.lightGreen.withOpacity(0.5),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
-          ], // children
+            Container(
+              margin: EdgeInsets.only(bottom: 40),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: FutureBuilder<String>(
+                  future: getValuesComparison(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      return Text(
+                        '${snapshot.data}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.justify,
+                      );
+                    } else {
+                      return Text(
+                        'Errore durante il recupero del valore',
+                        style: TextStyle(fontSize: 24),
+                      );
+                    }
+                  },
+                ),
+              ),
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -139,36 +208,70 @@ class HomePageWidget extends StatelessWidget {
     );
   }
 
+  ///////////////////////////////////////
+
   void _toNewDataPage(BuildContext context, Data? data) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
   } //_toNewDataPage
 
   Future<String> getValuesComparison() async {
     final sp = await SharedPreferences.getInstance();
-    String value='';
+    String value = '';
     double? actualHeight = sp.getDouble('actualHeight');
     double? actualWeight = sp.getDouble('actualWeight');
     double? referencevalueHFA = sp.getDouble('referencevalueHFA');
     double? referencevalueWFH = sp.getDouble('referencevalueWFH');
-    print(sp.getDouble('actualHeight'));
-    if (sp.getDouble('actualHeight') != null){
+
+    if (sp.getDouble('actualHeight') != null) {
       String stuntingString = 'NOT AT RISK';
-      if (actualHeight!<referencevalueHFA!){
+      if (actualHeight! < referencevalueHFA!) {
         stuntingString = 'AT RISK';
       }
       String wastingString = 'NOT AT RISK';
-      if (actualWeight!<referencevalueWFH!){
+      if (actualWeight! < referencevalueWFH!) {
         wastingString = 'AT RISK';
       }
-      value ='Based on your age, your height should be greater than $referencevalueHFA cm.\n'
-                    'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
-                    'Based on your height, your weight should be greater than $referencevalueWFH kg.\n'
-                    'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
+      value =
+          'Based on your age, your height should be greater than $referencevalueHFA cm. '
+          'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
+          'Based on your height, your weight should be greater than $referencevalueWFH kg. '
+          'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
+    } else {
+      value =
+          '\nEnter your personal data in the Profile and add your current anthropometric data.\n\n\n';
+      value = value.toUpperCase();
     }
-    else{
-      value = 'Enter your personal data in the Profile and add your current anthropometric data.';
+    return value;
+  } //getValuesComparison
+
+  Future<List<double?>> get() async {
+    final sp = await SharedPreferences.getInstance();
+
+    List<double?> listDataPoints = [
+      sp.getDouble('0'),
+      sp.getDouble("1"),
+      sp.getDouble("2"),
+      sp.getDouble("3"),
+      sp.getDouble("4"),
+      sp.getDouble("5"),
+      sp.getDouble("6")
+    ];
+
+    return listDataPoints;
+  } //getGraph
+
+  Future<String> getLastDates() async {
+    final sp = await SharedPreferences.getInstance();
+    List<String>? dates = sp.getStringList('dates');
+    String value = '';
+    if (dates != null) {
+      String first_date = dates[0].substring(0, 10);
+      String last_date = dates[6].substring(0, 10);
+      value = 'RESTING HEART RATE [bpm]\nfrom $first_date to $last_date';
+    } else {
+      value = 'RESTING HEART RATE [bpm]';
     }
     return value;
   }
-
-}
+}//HomePageWidget

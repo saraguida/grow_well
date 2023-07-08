@@ -48,9 +48,12 @@ dependencies:
   intl: ^0.18.1
   provider: ^6.0.5
 
-  # dependencies per authorization e impact
+  # dependencies for authorization and impact
   http: ^0.13.6
   jwt_decoder: ^2.0.1
+
+  # dep for graph
+  simple_line_chart: ^1.4.1
 
 
 dev_dependencies:
