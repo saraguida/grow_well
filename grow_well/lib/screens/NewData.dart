@@ -252,10 +252,7 @@ class _NewDataPageState extends State<NewDataPage> {
         columnIndexWFH = 1; // Indice di colonna per il genere maschile
       } else if (gender == 'Female') {
         columnIndexWFH = 2; // Indice di colonna per il genere femminile
-      } else {
-        columnIndexWFH = -1;
-        print('No selected gender');
-      }
+      } 
     }
     double ReferenceValueWFH = WFHtable[rowIndexWFH][columnIndexWFH];
     setState(() {
@@ -319,6 +316,7 @@ class _NewDataPageState extends State<NewDataPage> {
       final sp = await SharedPreferences.getInstance();
       sp.setDouble('actualHeight', double.parse(_heightController.text));
       sp.setDouble('actualWeight', double.parse(_weightController.text));
+      Navigator.pop(context);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -359,7 +357,7 @@ class _NewDataPageState extends State<NewDataPage> {
 
     DateTime now = _selectedDate;
     DateTime yesterday = now.subtract(Duration(days: 1));
-    DateTime sevendaysago = yesterday.subtract(Duration(days: 7));
+    DateTime sevendaysago = yesterday.subtract(Duration(days: 6));
     final start_date = DateFormat('yyyy-MM-dd').format(sevendaysago).toString();
     final end_date = DateFormat('yyyy-MM-dd').format(yesterday).toString();
 
@@ -435,13 +433,13 @@ class _NewDataPageState extends State<NewDataPage> {
       //print("Risultato 0 --> ${result[0].value}");
 
       // Save all the 7 values in sp
-      sp.setDouble("1", result[0].value);
-      sp.setDouble("2", result[1].value);
-      sp.setDouble("3", result[2].value);
-      sp.setDouble("4", result[3].value);
-      sp.setDouble("5", result[4].value);
-      sp.setDouble("6", result[5].value);
-      sp.setDouble("7", result[6].value);
+      sp.setDouble("0", result[0].value);
+      sp.setDouble("1", result[1].value);
+      sp.setDouble("2", result[2].value);
+      sp.setDouble("3", result[3].value);
+      sp.setDouble("4", result[4].value);
+      sp.setDouble("5", result[5].value);
+      sp.setDouble("6", result[6].value);
       sp.setStringList("dates", [
         result[0].time.toString(),
         result[1].time.toString(),

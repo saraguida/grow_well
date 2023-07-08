@@ -66,6 +66,6 @@ class RecapPage extends StatelessWidget {
 
   //Utility method to navigate to NewDataPage
   void _toNewDataPage(BuildContext context, Data? data) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewDataPage(data: data,HFAtable:[],WFHtable: [],)));
+    Navigator.push(context,MaterialPageRoute(builder: (context) => NewDataPage(data: data,HFAtable:[],WFHtable: [],)));
   } //_toNewDataPage
 } //RecapPage

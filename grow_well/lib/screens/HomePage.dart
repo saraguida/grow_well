@@ -98,36 +98,6 @@ class _HomePageState extends State<HomePage> {
 class HomePageWidget extends StatelessWidget {
   const HomePageWidget({super.key});
 
-  //////// GRAFICO formattato dal pacchetto
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: LayoutBuilder(builder:
-                  (BuildContext context, BoxConstraints viewportConstraints) {
-                return SingleChildScrollView(
-                    child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight,
-                  ),
-                  child: LineChartContent(),
-                ));
-              }))),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add_outlined,
-            color: Color.fromARGB(255, 59, 81, 33)),
-        backgroundColor: Color.fromARGB(255, 225, 250, 196),
-        onPressed: () => _toNewDataPage(context, null),
-      ),
-    );
-  } //build
-*/
-//////////////
-
-  ////// BUILD ORIGINALE
   @override
   Widget build(BuildContext context) {
   return Scaffold(
@@ -152,7 +122,8 @@ class HomePageWidget extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 37, 50, 21),
+                      backgroundColor: Colors.lightGreen.withOpacity(0.5),
                     ),
                     textAlign: TextAlign.center,
                   );
@@ -189,14 +160,15 @@ class HomePageWidget extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 37, 50, 21),
+                  backgroundColor: Colors.lightGreen.withOpacity(0.5),
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 35),
+            margin: EdgeInsets.only(bottom: 40),
             child:Align(
             alignment: Alignment.topCenter,
             child: FutureBuilder<String>(
@@ -269,7 +241,8 @@ class HomePageWidget extends StatelessWidget {
           'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
     } else {
       value =
-          'Enter your personal data in the Profile and add your current anthropometric data.';
+          '\nEnter your personal data in the Profile and add your current anthropometric data.\n\n\n';
+          value=value.toUpperCase();
     }
     return value;
   } //getValuesComparison

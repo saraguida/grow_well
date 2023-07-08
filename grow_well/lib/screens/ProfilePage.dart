@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:grow_well/screens/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final List<String> items = ['Female', 'Male', 'Other'];
+final List<String> items = ['Female', 'Male'];
 String? selectedValue;
 DateTime date = DateTime(2018, 1, 1);
 

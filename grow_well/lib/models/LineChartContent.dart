@@ -84,13 +84,13 @@ Future<List<DataPoint>> _createDataPoints() async {
 
   if (sp.getStringList("dates") != null) {
     List<double?> listDataPoints = [
-      sp.getDouble('1'),
+      sp.getDouble('0'),
+      sp.getDouble("1"),
       sp.getDouble("2"),
       sp.getDouble("3"),
       sp.getDouble("4"),
       sp.getDouble("5"),
       sp.getDouble("6"),
-      sp.getDouble("7"),
     ];
 
     dataPoints = listDataPoints
