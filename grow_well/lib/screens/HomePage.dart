@@ -5,6 +5,7 @@ import 'package:grow_well/screens/InfoPage.dart';
 import 'package:grow_well/screens/NewData.dart';
 import 'package:grow_well/screens/ProfilePage.dart';
 import 'package:grow_well/screens/RecapPage.dart';
+import 'package:intl/intl.dart';
 //import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -129,62 +130,114 @@ class HomePageWidget extends StatelessWidget {
   ////// BUILD ORIGINALE
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 12, 0),
-                child: Text("RESTING HEART RATE\n(the last 7 days)",
+  return Scaffold(
+    body: Container(
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child:Container(
+            child:Align(
+            alignment: Alignment.center,
+            child: FutureBuilder<String>(
+              future: getLastDates(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  return Text(
+                    '${snapshot.data}',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.black),
-                    textAlign: TextAlign.center)),
-            Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 12, 0),
-                child: LineChartContent()),
-            //LineChartContent(),
-            SizedBox(height: 25),
-            Container(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: FutureBuilder<String>(
-                future: getValuesComparison(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // Se il valore è ancora in attesa, mostra un indicatore di caricamento
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasData) {
-                    // Se il valore è stato ottenuto con successo, mostralo nel testo
-                    return Text('${snapshot.data}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 18,
-                            color: Colors.black),
-                        textAlign: TextAlign.justify);
-                  } else {
-                    // Se si verifica un errore durante l'ottenimento del valore, mostra un messaggio di errore
-                    return Text(
-                      'Errore durante il recupero del valore',
-                      style: TextStyle(fontSize: 24),
-                    );
-                  }
-                  ;
-                },
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                  );
+                } else {
+                  return Text(
+                    'Errore durante il recupero del valore',
+                    style: TextStyle(fontSize: 24),
+                  );
+                }
+              },
+            ),
+          ),
+          )
+          ),
+          Expanded(
+            flex: 5,
+            child: LineChartContent(),
+          ),
+          Expanded(
+            child: Container(
+            child:
+            Text('Your resting HR should be between 101.03 and 108.28 bpm.\n',
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            color: Colors.black,),
+            textAlign: TextAlign.justify,)  
+            )),
+          Expanded(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "HEIGHT FOR AGE AND\nWEIGHT FOR HEIGHT",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-          ], // children
-        ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 35),
+            child:Align(
+            alignment: Alignment.topCenter,
+            child: FutureBuilder<String>(
+              future: getValuesComparison(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  return Text(
+                    '${snapshot.data}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.justify,
+                  );
+                } else {
+                  return Text(
+                    'Errore durante il recupero del valore',
+                    style: TextStyle(fontSize: 24),
+                  );
+                }
+              },
+            ),
+          ),
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add_outlined,
-            color: Color.fromARGB(255, 59, 81, 33)),
-        backgroundColor: Color.fromARGB(255, 225, 250, 196),
-        onPressed: () => _toNewDataPage(context, null),
-      ),
-    );
-  } //build
+    ),
+    floatingActionButton: FloatingActionButton(
+      child: const Icon(Icons.add_outlined,
+          color: Color.fromARGB(255, 59, 81, 33)),
+      backgroundColor: Color.fromARGB(255, 225, 250, 196),
+      onPressed: () => _toNewDataPage(context, null),
+    ),
+  );
+}
+
+
+
   ///////////////////////////////////////
 
   void _toNewDataPage(BuildContext context, Data? data) {
@@ -210,9 +263,9 @@ class HomePageWidget extends StatelessWidget {
         wastingString = 'AT RISK';
       }
       value =
-          'Based on your age, your height should be greater than $referencevalueHFA cm.\n'
+          'Based on your age, your height should be greater than $referencevalueHFA cm. '
           'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
-          'Based on your height, your weight should be greater than $referencevalueWFH kg.\n'
+          'Based on your height, your weight should be greater than $referencevalueWFH kg. '
           'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
     } else {
       value =
@@ -236,4 +289,18 @@ class HomePageWidget extends StatelessWidget {
 
     return listDataPoints;
   } //getGraph
+Future<String> getLastDates() async {
+    final sp = await SharedPreferences.getInstance();
+    List <String>? dates =sp.getStringList('dates');
+    String value = '';
+  if (dates != null) {
+     String first_date=dates[0].substring(0,10);
+     String last_date=dates[6].substring(0,10);
+      value ='RESTING HEART RATE [bpm]\nfrom $first_date to $last_date';
+    } else {
+      value =
+          'RESTING HEART RATE [bpm]';
+    }
+    return value;
+  }
 }//HomePageWidget

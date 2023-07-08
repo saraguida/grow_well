@@ -358,10 +358,10 @@ class _NewDataPageState extends State<NewDataPage> {
     */
 
     DateTime now = _selectedDate;
-    //DateTime yesterday = now.subtract(Duration(days: 1));
-    DateTime sevendaysago = now.subtract(Duration(days: 7));
+    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateTime sevendaysago = yesterday.subtract(Duration(days: 7));
     final start_date = DateFormat('yyyy-MM-dd').format(sevendaysago).toString();
-    final end_date = DateFormat('yyyy-MM-dd').format(now).toString();
+    final end_date = DateFormat('yyyy-MM-dd').format(yesterday).toString();
 
     final url = Impact.baseUrl +
         Impact.restingHREndpoint +
@@ -435,13 +435,13 @@ class _NewDataPageState extends State<NewDataPage> {
       //print("Risultato 0 --> ${result[0].value}");
 
       // Save all the 7 values in sp
-      sp.setDouble("0", result[0].value);
-      sp.setDouble("1", result[1].value);
-      sp.setDouble("2", result[2].value);
-      sp.setDouble("3", result[3].value);
-      sp.setDouble("4", result[4].value);
-      sp.setDouble("5", result[5].value);
-      sp.setDouble("6", result[6].value);
+      sp.setDouble("1", result[0].value);
+      sp.setDouble("2", result[1].value);
+      sp.setDouble("3", result[2].value);
+      sp.setDouble("4", result[3].value);
+      sp.setDouble("5", result[4].value);
+      sp.setDouble("6", result[5].value);
+      sp.setDouble("7", result[6].value);
       sp.setStringList("dates", [
         result[0].time.toString(),
         result[1].time.toString(),

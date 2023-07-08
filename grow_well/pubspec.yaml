@@ -55,8 +55,7 @@ dependencies:
 
   # dep per grafico
   simple_line_chart: ^1.4.1
-  #flutter_charts: ^0.5.1
-  syncfusion_flutter_charts: ^19.2.47
+
 
 
 dev_dependencies:
