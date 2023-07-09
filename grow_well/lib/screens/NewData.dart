@@ -55,8 +55,8 @@ class _NewDataPageState extends State<NewDataPage> {
   TextEditingController _weightController = TextEditingController();
   TextEditingController _hearthRateController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  double _ReferenceValueHFA = 1;
-  double _ReferenceValueWFH = 1;
+  //double _ReferenceValueHFA = 1;
+  //double _ReferenceValueWFH = 1;
 
   @override
   void initState() {
@@ -68,8 +68,8 @@ class _NewDataPageState extends State<NewDataPage> {
         widget.data == null ? '' : widget.data!.hearthRate.toString();
     _selectedDate =
         widget.data == null ? DateTime.now() : widget.data!.dateTime;
-    _HFAReferenceValue();
-    _WFHReferenceValue(_heightController.text);
+    //Future<double> ReferenceValueHFA =_HFAReferenceValue();
+    //Future<double> ReferenceValueWFH = _WFHReferenceValue(_heightController.text);
     super.initState();
   } // initState
 
@@ -211,9 +211,9 @@ class _NewDataPageState extends State<NewDataPage> {
       }
     }
     double ReferenceValueHFA = HFAtable[rowIndexHFA][columnIndexHFA];
-    setState(() {
-      _ReferenceValueHFA = ReferenceValueHFA;
-    });
+    /*setState(() {
+      ReferenceValueHFA = ReferenceValueHFA;
+    });*/
     sp.setDouble('referencevalueHFA', ReferenceValueHFA);
     return (ReferenceValueHFA);
   }
@@ -255,9 +255,9 @@ class _NewDataPageState extends State<NewDataPage> {
       }
     }
     double ReferenceValueWFH = WFHtable[rowIndexWFH][columnIndexWFH];
-    setState(() {
-      _ReferenceValueWFH = ReferenceValueWFH;
-    });
+    /*setState(() {
+      ReferenceValueWFH = ReferenceValueWFH;
+    });*/
     sp.setDouble('referencevalueWFH', ReferenceValueWFH);
     return (ReferenceValueWFH);
   }
@@ -282,6 +282,7 @@ class _NewDataPageState extends State<NewDataPage> {
 
       // Calcola il valore di riferimento per l'indicatore WFH utilizzando _WFHReferenceValue
       double referenceValueWFH = await _WFHReferenceValue(heightText);
+      double referenceValueHFA = await _HFAReferenceValue();
 
       // Se l'originale Data passato a NewDataPage era nullo, allora aggiungi una nuova Data...
       if (widget.data == null) {
@@ -292,7 +293,7 @@ class _NewDataPageState extends State<NewDataPage> {
           //double.parse(_hearthRateController.text),
           resultHR,
           _selectedDate,
-          _ReferenceValueHFA,
+          referenceValueHFA,
           referenceValueWFH, // Utilizza il valore di riferimento WFH calcolato
         );
         await Provider.of<DatabaseRepository>(context, listen: false)
@@ -307,7 +308,7 @@ class _NewDataPageState extends State<NewDataPage> {
           //double.parse(_hearthRateController.text),
           resultHR,
           _selectedDate,
-          _ReferenceValueHFA,
+          referenceValueHFA,
           referenceValueWFH, // Utilizza il valore di riferimento WFH calcolato
         );
         await Provider.of<DatabaseRepository>(context, listen: false)

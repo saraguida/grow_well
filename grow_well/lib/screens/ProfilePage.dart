@@ -5,10 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:grow_well/screens/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final List<String> items = ['Female', 'Male'];
-String? selectedValue;
-DateTime date = DateTime(2018, 1, 1);
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -18,6 +14,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   static const routeDisplayName = 'Profile';
+
+  final List<String> items = ['Female', 'Male'];
+  String? selectedValue;
+  DateTime date = DateTime(2018, 1, 1);
 
   //static const route = '/profile/';
   //static const routename = 'ProfilePage';
@@ -50,17 +50,17 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } //gender check
     if (sp.getString('date') == null) {
-      DateTime dateT = DateTime(2018, 1, 1);
+      //DateTime dateT = DateTime(2018, 1, 1);
       String stringDate = date.toString();
       sp.setString('date', stringDate);
-      setState(() {
+      /*setState(() {
         date = dateT;
-      });
+      });*/
     } else {
-      String dateString = sp.getString('date')!;
-      DateTime dateT = DateTime.parse(dateString);
+      String stringDate = sp.getString('date')!;
+      DateTime updatedDate = DateTime.parse(stringDate);
       setState(() {
-        date = dateT;
+        date = updatedDate;
       });
     } //date of birth check
     if (sp.getString('address') != null) {
@@ -87,9 +87,9 @@ class _ProfilePageState extends State<ProfilePage> {
   } //_saveGender
 
   void _saveDate(DateTime datetime) async {
-    String dateString = datetime.toString();
+    String stringDate = datetime.toString();
     final sp = await SharedPreferences.getInstance();
-    await sp.setString('date', dateString);
+    await sp.setString('date', stringDate);
     setState(() {
       date = datetime;
     });
