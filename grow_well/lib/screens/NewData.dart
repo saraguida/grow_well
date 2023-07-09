@@ -335,10 +335,6 @@ class _NewDataPageState extends State<NewDataPage> {
           result.add(RestingHR.fromJson(decodedResponse2['data'][i]['date'],
               decodedResponse2['data'][i]['data']));
         }
-
-        /*
-        result.add(RestingHR.fromJson(decodedResponse['data'][i]['date'],
-            decodedResponse['data'][i]['data'])); */
       } //for
 
       print(result);

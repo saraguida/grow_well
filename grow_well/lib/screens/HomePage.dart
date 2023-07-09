@@ -124,7 +124,7 @@ class HomePageWidget extends StatelessWidget {
                       );
                     } else {
                       return Text(
-                        'Errore durante il recupero del valore',
+                        'Error while fetching the data',
                         style: TextStyle(fontSize: 24),
                       );
                     }
@@ -185,7 +185,7 @@ class HomePageWidget extends StatelessWidget {
                       );
                     } else {
                       return Text(
-                        'Errore durante il recupero del valore',
+                        'Error while fetching the data',
                         style: TextStyle(fontSize: 24),
                       );
                     }
