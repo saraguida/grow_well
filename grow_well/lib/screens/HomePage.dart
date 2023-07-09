@@ -123,7 +123,7 @@ class HomePageWidget extends StatelessWidget {
                     );
                   } else {
                     return Text(
-                      'Errore durante il recupero del valore',
+                      'Error while fetching the data',
                       style: TextStyle(fontSize: 24),
                     );
                   }
@@ -185,7 +185,7 @@ class HomePageWidget extends StatelessWidget {
                       );
                     } else {
                       return Text(
-                        'Errore durante il recupero del valore',
+                        'Error while fetching the data',
                         style: TextStyle(fontSize: 24),
                       );
                     }
@@ -240,22 +240,6 @@ class HomePageWidget extends StatelessWidget {
       value = value.toUpperCase();
     }
     return value;
-  } 
-
-  Future<List<double?>> get() async {
-    final sp = await SharedPreferences.getInstance();
-
-    List<double?> listDataPoints = [
-      sp.getDouble('0'),
-      sp.getDouble("1"),
-      sp.getDouble("2"),
-      sp.getDouble("3"),
-      sp.getDouble("4"),
-      sp.getDouble("5"),
-      sp.getDouble("6")
-    ];
-
-    return listDataPoints;
   } 
 
   Future<String> getLastDates() async {
