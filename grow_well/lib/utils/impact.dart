@@ -5,8 +5,8 @@ class Impact {
 
   static String restingHREndpoint = 'data/v1/resting_heart_rate/patients/';
 
-  static String username = 'OtUvAPnspn';
-  static String password = '12345678!';
+  static String username = 'Username';
+  static String password = 'Password';
 
   static String patientUsername = 'Jpefaq6m58';
 }//Impact

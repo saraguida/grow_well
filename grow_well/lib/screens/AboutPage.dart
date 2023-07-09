@@ -26,7 +26,7 @@ class AboutPage extends StatelessWidget {
                     "GrowWell is a novel solution with one goal in mind: to help ending malnutrition by providing a simple and intuitive interface. You can easily track heart rate and keep an eye on two indicators for stunting and wasting. You can check when the values go out of range and medical attention is needed. Our mission is to give our contribution for achieving the internationally agreed targets on stunting and wasting in children under 5 years of age.",
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
-                        fontSize: 18,
+                        fontSize: 17,
                         color: Colors.black),
                     textAlign: TextAlign.justify),
               ),
@@ -69,11 +69,11 @@ class AboutPage extends StatelessWidget {
                 )),
             SizedBox(width: 20),
             SizedBox(
-              width: 300,
+              width: 280,
               child: Text(text,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: 18,
+                      fontSize: 17,
                       color: Colors.black),
                   textAlign: TextAlign.justify),
             )

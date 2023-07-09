@@ -79,7 +79,7 @@ class _LineChartContentState extends State<LineChartContent> {
             padding: EdgeInsets.only(top: 20),
             child: LineChart(
               style: style,
-              seriesHeight: 300,
+              seriesHeight: 250,
               data: _data,
             ),
           ),

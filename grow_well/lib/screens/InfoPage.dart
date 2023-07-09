@@ -27,13 +27,13 @@ class InfoPageWidget extends StatelessWidget {
                   width: 175,
                   child: Text("Your doctor",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20))),
+                          fontWeight: FontWeight.bold, fontSize: 18))),
               SizedBox(width: 20),
               SizedBox(
-                  width: 120,
+                  width: 100,
                   child: Text("3265771001",
                       style: TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 20))),
+                          fontWeight: FontWeight.normal, fontSize: 16))),
               SizedBox(width: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -54,13 +54,13 @@ class InfoPageWidget extends StatelessWidget {
                   width: 175,
                   child: Text("Emergency doctor",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20))),
+                          fontWeight: FontWeight.bold, fontSize: 18))),
               SizedBox(width: 20),
               SizedBox(
-                  width: 120,
+                  width: 100,
                   child: Text("3988129220",
                       style: TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 20))),
+                          fontWeight: FontWeight.normal, fontSize: 16))),
               SizedBox(width: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,13 +81,13 @@ class InfoPageWidget extends StatelessWidget {
                   width: 175,
                   child: Text("Emergency number",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20))),
+                          fontWeight: FontWeight.bold, fontSize: 18))),
               SizedBox(width: 20),
               SizedBox(
-                  width: 120,
+                  width: 100,
                   child: Text("112",
                       style: TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 20))),
+                          fontWeight: FontWeight.normal, fontSize: 16))),
               SizedBox(width: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -108,13 +108,13 @@ class InfoPageWidget extends StatelessWidget {
                   width: 175,
                   child: Text("Nearest Hospital",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20))),
+                          fontWeight: FontWeight.bold, fontSize: 18))),
               SizedBox(width: 20),
               SizedBox(
-                  width: 120,
+                  width: 100,
                   child: Text("0498211111",
                       style: TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 20))),
+                          fontWeight: FontWeight.normal, fontSize: 16))),
               SizedBox(width: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

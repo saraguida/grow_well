@@ -5,13 +5,8 @@ import 'package:grow_well/screens/InfoPage.dart';
 import 'package:grow_well/screens/NewData.dart';
 import 'package:grow_well/screens/ProfilePage.dart';
 import 'package:grow_well/screens/RecapPage.dart';
-import 'package:intl/intl.dart';
-//import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// Per grafico
 import 'package:grow_well/models/LineChartContent.dart';
-//
 
 class HomePage extends StatefulWidget {
   @override
@@ -137,9 +132,11 @@ class HomePageWidget extends StatelessWidget {
                 ),
               ),
             )),
-            Expanded(
-              flex: 5,
-              child: LineChartContent(),
+            Container(
+              child: Expanded(
+                flex: 5,
+                child: LineChartContent(),
+              ),
             ),
             Expanded(
                 child: Container(
@@ -207,71 +204,53 @@ class HomePageWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  ///////////////////////////////////////
+void _toNewDataPage(BuildContext context, Data? data) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
+}
 
-  void _toNewDataPage(BuildContext context, Data? data) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => NewDataPage.fromHomePage()));
-  } //_toNewDataPage
+Future<String> getValuesComparison() async {
+  final sp = await SharedPreferences.getInstance();
+  String value = '';
+  double? actualHeight = sp.getDouble('actualHeight');
+  double? actualWeight = sp.getDouble('actualWeight');
+  double? referencevalueHFA = sp.getDouble('referencevalueHFA');
+  double? referencevalueWFH = sp.getDouble('referencevalueWFH');
 
-  Future<String> getValuesComparison() async {
-    final sp = await SharedPreferences.getInstance();
-    String value = '';
-    double? actualHeight = sp.getDouble('actualHeight');
-    double? actualWeight = sp.getDouble('actualWeight');
-    double? referencevalueHFA = sp.getDouble('referencevalueHFA');
-    double? referencevalueWFH = sp.getDouble('referencevalueWFH');
-
-    if (sp.getDouble('actualHeight') != null) {
-      String stuntingString = 'NOT AT RISK';
-      if (actualHeight! < referencevalueHFA!) {
-        stuntingString = 'AT RISK';
-      }
-      String wastingString = 'NOT AT RISK';
-      if (actualWeight! < referencevalueWFH!) {
-        wastingString = 'AT RISK';
-      }
-      value =
-          'Based on your age, your height should be greater than $referencevalueHFA cm. '
-          'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
-          'Based on your height, your weight should be greater than $referencevalueWFH kg. '
-          'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
-    } else {
-      value =
-          '\nEnter your personal data in the Profile and add your current anthropometric data.\n\n\n';
-      value = value.toUpperCase();
+  if (sp.getDouble('actualHeight') != null) {
+    String stuntingString = 'NOT AT RISK';
+    if (actualHeight! < referencevalueHFA!) {
+      stuntingString = 'AT RISK';
     }
-    return value;
-  } //getValuesComparison
-
-  Future<List<double?>> get() async {
-    final sp = await SharedPreferences.getInstance();
-
-    List<double?> listDataPoints = [
-      sp.getDouble('0'),
-      sp.getDouble("1"),
-      sp.getDouble("2"),
-      sp.getDouble("3"),
-      sp.getDouble("4"),
-      sp.getDouble("5"),
-      sp.getDouble("6")
-    ];
-
-    return listDataPoints;
-  } //getGraph
-
-  Future<String> getLastDates() async {
-    final sp = await SharedPreferences.getInstance();
-    List<String>? dates = sp.getStringList('dates');
-    String value = '';
-    if (dates != null) {
-      String first_date = dates[0].substring(0, 10);
-      String last_date = dates[6].substring(0, 10);
-      value = 'RESTING HEART RATE [bpm]\nfrom $first_date to $last_date';
-    } else {
-      value = 'RESTING HEART RATE [bpm]';
+    String wastingString = 'NOT AT RISK';
+    if (actualWeight! < referencevalueWFH!) {
+      wastingString = 'AT RISK';
     }
-    return value;
+    value =
+        'Based on your age, your height should be greater than $referencevalueHFA cm. '
+        'Your current height is $actualHeight cm so you are ${stuntingString}  of stunting.\n\n'
+        'Based on your height, your weight should be greater than $referencevalueWFH kg. '
+        'Your current weight is $actualWeight kg so you are ${wastingString} of wasting.\n';
+  } else {
+    value =
+        '\nEnter your personal data in the Profile and add your current anthropometric data.\n\n\n';
+    value = value.toUpperCase();
   }
-}//HomePageWidget
+  return value;
+}
+
+Future<String> getLastDates() async {
+  final sp = await SharedPreferences.getInstance();
+  List<String>? dates = sp.getStringList('dates');
+  String value = '';
+  if (dates != null) {
+    String first_date = dates[0].substring(0, 10);
+    String last_date = dates[6].substring(0, 10);
+    value = 'RESTING HEART RATE [bpm]\nfrom $first_date to $last_date';
+  } else {
+    value = 'RESTING HEART RATE [bpm]';
+  }
+  return value;
+}

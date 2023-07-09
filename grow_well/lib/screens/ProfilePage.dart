@@ -150,62 +150,65 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: EdgeInsets.all(15),
                   child: Center(
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Gender:'),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            hint: Text(
-                              'Select',
-                            ),
-                            items: items
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: selectedValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedValue = value as String;
-                              });
-                              _saveGender(selectedValue!);
-                            },
-                            buttonStyleData: const ButtonStyleData(
-                              height: 40,
-                              width: 90,
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        const Text('Date of birth:'),
-                        CupertinoButton(
-                          onPressed: () => _showDialog(
-                            CupertinoDatePicker(
-                              initialDateTime: date,
-                              mode: CupertinoDatePickerMode.date,
-                              use24hFormat: true,
-                              onDateTimeChanged: (DateTime newDate) {
-                                setState(() => date = newDate);
-                                _saveDate(date);
+                        Row(children: [
+                          Text('Gender:', style: TextStyle(fontSize: 16)),
+                          SizedBox(width: 20),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              hint: Text(
+                                'Select',
+                              ),
+                              items: items
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: selectedValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedValue = value as String;
+                                });
+                                _saveGender(selectedValue!);
                               },
+                              buttonStyleData: const ButtonStyleData(
+                                height: 40,
+                                width: 90,
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                              ),
                             ),
                           ),
-                          child: Text(
-                            '${date.month}-${date.day}-${date.year}',
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
+                        ]),
+                        Row(children: [
+                          const Text('Date of birth:',
+                              style: TextStyle(fontSize: 16)),
+                          CupertinoButton(
+                            onPressed: () => _showDialog(
+                              CupertinoDatePicker(
+                                initialDateTime: date,
+                                mode: CupertinoDatePickerMode.date,
+                                use24hFormat: true,
+                                onDateTimeChanged: (DateTime newDate) {
+                                  setState(() => date = newDate);
+                                  _saveDate(date);
+                                },
+                              ),
+                            ),
+                            child: Text(
+                              '${date.month}-${date.day}-${date.year}',
+                            ),
+                          ),
+                        ]),
                       ],
                     ),
                   ),
