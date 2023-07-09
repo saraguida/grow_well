@@ -23,7 +23,7 @@ class AboutPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
                 child: const Text(
-                    "GrowWell is a novel solution with one goal in mind: to help ending malnutrition by providing a simple and intuitive interface. You can easily track heart rate and keep an eye on two indicators for stunting and wasting. You'll receive a prompt warning when the values go out of range and medical attention is needed. Our mission is to give our contribution for achieving the internationally agreed targets on stunting and wasting in children under 5 years of age.",
+                    "GrowWell is a novel solution with one goal in mind: to help ending malnutrition by providing a simple and intuitive interface. You can easily track heart rate and keep an eye on two indicators for stunting and wasting. You can check when the values go out of range and medical attention is needed. Our mission is to give our contribution for achieving the internationally agreed targets on stunting and wasting in children under 5 years of age.",
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 18,
@@ -41,11 +41,11 @@ class AboutPage extends StatelessWidget {
 
               // 4°
               _elencoPuntato(0xf06bb, "Recap",
-                  "You'll also have a recap page with a calendar where all the past data are shown"),
+                  "You'll also have a recap page where all the past collected data is shown"),
 
               // 5°
               _elencoPuntato(0xe33c, "Info",
-                  "In the info page you'll find all the important information about who to call and where to go when you need medical assistance")
+                  "In the info page you'll find all the important information about who to call when you need medical assistance")
             ],
           ),
         ));
