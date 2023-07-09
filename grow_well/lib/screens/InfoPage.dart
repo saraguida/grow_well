@@ -10,7 +10,6 @@ class InfoPageWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Descrizione introduttiva
           Text(
               "Some helpful phone numbers to call when medical assistance is needed.",
               style: TextStyle(

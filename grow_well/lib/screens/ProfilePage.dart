@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:grow_well/screens/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,10 +17,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final List<String> items = ['Female', 'Male'];
   String? selectedValue;
   DateTime date = DateTime(2018, 1, 1);
-
-  //static const route = '/profile/';
-  //static const routename = 'ProfilePage';
-
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -30,12 +25,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    //Check if the user has already inserted profile data
     _checkLogin();
   } //initState
 
   void _checkLogin() async {
-    //Get the SharedPreference instance and check if the values are set or not
     final sp = await SharedPreferences.getInstance();
     if (sp.getString('name') != null) {
       nameController.text = sp.getString('name')!;
@@ -50,12 +43,8 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } //gender check
     if (sp.getString('date') == null) {
-      //DateTime dateT = DateTime(2018, 1, 1);
       String stringDate = date.toString();
       sp.setString('date', stringDate);
-      /*setState(() {
-        date = dateT;
-      });*/
     } else {
       String stringDate = sp.getString('date')!;
       DateTime updatedDate = DateTime.parse(stringDate);
@@ -111,14 +100,10 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (BuildContext context) => Container(
         height: 216,
         padding: const EdgeInsets.only(top: 6.0),
-        // The Bottom margin is provided to align the popup above the system
-        // navigation bar.
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        // Provide a background color for the popup.
         color: CupertinoColors.systemBackground.resolveFrom(context),
-        // Use a SafeArea widget to avoid system overlaps.
         child: SafeArea(
           top: false,
           child: child,
@@ -206,13 +191,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         const Text('Date of birth:'),
                         CupertinoButton(
-                          // Display a CupertinoDatePicker in date picker mode.
                           onPressed: () => _showDialog(
                             CupertinoDatePicker(
                               initialDateTime: date,
                               mode: CupertinoDatePickerMode.date,
                               use24hFormat: true,
-                              // This is called when the user changes the date.
                               onDateTimeChanged: (DateTime newDate) {
                                 setState(() => date = newDate);
                                 _saveDate(date);
@@ -221,8 +204,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           child: Text(
                             '${date.month}-${date.day}-${date.year}',
-                            //style: const TextStyle(
-                            //fontSize: 22.0),
                           ),
                         ),
                       ],
@@ -267,11 +248,9 @@ class _ProfilePageState extends State<ProfilePage> {
   } //build
 
   void _toLoginPage(BuildContext context) async {
-    //Unset the 'username' filed in SharedPreference
     final sp = await SharedPreferences.getInstance();
     sp.remove('username');
 
-    // Pop the HomePage
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   } //_toLoginPage

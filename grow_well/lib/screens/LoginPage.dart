@@ -3,11 +3,9 @@ import 'package:grow_well/screens/HomePage.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/////// for authorization
 import 'dart:convert';
 import 'package:grow_well/utils/impact.dart';
 import 'package:http/http.dart' as http;
-///////
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,15 +20,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    //Check if the user is already logged in before rendering the login page
     _checkLogin();
   } //initState
 
   void _checkLogin() async {
-    //Get the SharedPreference instance and check if the value of the 'username' filed is set or not
     final sp = await SharedPreferences.getInstance();
     if (sp.getString('username') != null) {
-      //If 'username is set, push the HomePage
       _toHomePage(context);
     } //if
   } //_checkLogin
@@ -44,19 +39,16 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       return 'Wrong credentials';
     }
-  }
+  } //_loginUser
 
-  // _loginUser
   Future<String> _signUpUser(SignupData data) async {
     return 'To be implemented';
-  }
+  } //_signUpUser
 
-  // _signUpUser
   Future<String> _recoverPassword(String email) async {
-    return 'Recover password functionality needs to be implemented';
-  }
+    return 'To be implemented';
+  } //_recoverPassword
 
-  // _recoverPassword
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
@@ -67,16 +59,12 @@ class _LoginPageState extends State<LoginPage> {
               color: Color.fromARGB(255, 59, 81, 33),
               fontWeight: FontWeight.bold),
           logoWidth: 1,
-
-          // rettangolo interiore
           cardTheme: CardTheme(
               color: Colors.yellow.shade100,
               elevation: 10,
               margin: EdgeInsets.only(top: 20),
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
-
-          // finestre di inserimento email e password
           inputTheme: InputDecorationTheme(
             filled: true,
             fillColor: Color.fromARGB(255, 59, 81, 33).withOpacity(.1),
@@ -86,8 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10)),
           ),
-
-          // LOGIN button
           buttonTheme: LoginButtonTheme(
             backgroundColor: Colors.yellow.shade700,
             elevation: 9.0,
@@ -106,12 +92,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   } // build
 
-/*
-  void _toHomePage(BuildContext context) {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
-  } //_toHomePage */
-
   Future<void> _toHomePage(BuildContext context) async {
     final result = await _authorize(); // return statusCode
     final message = result == 200 ? 'Request successful' : 'Request failed';
@@ -122,17 +102,13 @@ class _LoginPageState extends State<LoginPage> {
   } //_toHomePage
 
   // AUTHORIZATION
-  //This method allows to obtain the JWT token pair from IMPACT and store it in SharedPreferences
   Future<int?> _authorize() async {
-    //Create the request
     final url = Impact.baseUrl + Impact.tokenEndpoint;
     final body = {'username': Impact.username, 'password': Impact.password};
 
-    //Get the response
     print('Calling: $url');
     final response = await http.post(Uri.parse(url), body: body);
 
-    //If 200, set the token
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(response.body);
       final sp = await SharedPreferences.getInstance();
@@ -140,7 +116,6 @@ class _LoginPageState extends State<LoginPage> {
       sp.setString('refresh', decodedResponse['refresh']);
     } //if
 
-    //Just return the status code
     return response.statusCode;
   } //_authorize
 } // LoginScreen

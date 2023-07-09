@@ -13,9 +13,6 @@ class RecapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Print the route display name for debugging
-    print('${RecapPage.routeDisplayName} built');
-
     return Scaffold(
       body: Center(
         child: Consumer<DatabaseRepository>(builder: (context, dbr, child) {
@@ -25,7 +22,6 @@ class RecapPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final dataList = snapshot.data as List<Data>;
-                //If the Data table is empty, show a simple Text, otherwise show the list of data using a ListView.
                 return dataList.length == 0
                     ? Text('The summary list is currently empty')
                     : ListView.builder(
@@ -49,28 +45,25 @@ class RecapPage extends StatelessWidget {
                                   '${Formats.fullDateFormatNoSeconds.format(dataList[dataIndex].dateTime)}'),
                               onTap: () =>
                                   _toNewDataPage(context, dataList[dataIndex]),
-                            ), // ListTile
-                          ); // Card
-                        }); // ListView.builder
-              } // if
-              else {
+                            ),
+                          );
+                        });
+              } else {
                 return CircularProgressIndicator();
-              } // else
-            }, // FutureBuilder builder
+              }
+            },
           );
-        } // Consumer-builder
-            ), // Consumer
-      ), // Center
+        }),
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add_outlined,
             color: Color.fromARGB(255, 59, 81, 33)),
         backgroundColor: Color.fromARGB(255, 225, 250, 196),
         onPressed: () => _toNewDataPage(context, null),
-      ), // FloatingActionButton
-    ); // Scaffold
+      ),
+    );
   } //build
 
-  //Utility method to navigate to NewDataPage
   void _toNewDataPage(BuildContext context, Data? data) {
     Navigator.push(
         context,

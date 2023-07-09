@@ -32,26 +32,26 @@ class AboutPage extends StatelessWidget {
               ),
 
               // 2°
-              _elencoPuntato(0xe318, "Home",
+              _bulletList(0xe318, "Home",
                   "In your home page you'll find the three indicators: heart rate, hight-for-age indicator for stunting, weight-for-height for malnutrition"),
 
               // 3°
-              _elencoPuntato(0xe491, "Profile",
+              _bulletList(0xe491, "Profile",
                   "The profile page will give you a recap of the child's personal data"),
 
               // 4°
-              _elencoPuntato(0xf06bb, "Recap",
+              _bulletList(0xf06bb, "Recap",
                   "You'll also have a recap page where all the past collected data is shown"),
 
               // 5°
-              _elencoPuntato(0xe33c, "Info",
+              _bulletList(0xe33c, "Info",
                   "In the info page you'll find all the important information about who to call when you need medical assistance")
             ],
           ),
         ));
   }
 
-  Widget _elencoPuntato(int iconCode, String pageName, String testo) {
+  Widget _bulletList(int iconCode, String pageName, String text) {
     return Container(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
         child: Row(
@@ -70,7 +70,7 @@ class AboutPage extends StatelessWidget {
             SizedBox(width: 20),
             SizedBox(
               width: 300,
-              child: Text(testo,
+              child: Text(text,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 18,
